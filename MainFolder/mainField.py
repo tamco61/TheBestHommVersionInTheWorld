@@ -2,10 +2,25 @@ import pygame
 from MainFolder import dop_func
 
 pygame.init()
+clock = pygame.time.Clock()
 all_sprites = pygame.sprite.Group()
 screen = pygame.display.set_mode(flags=pygame.FULLSCREEN)
 WIDTH, HEIGHT = screen.get_width(), screen.get_height()
+FPS = 20
 
+
+class SpaceShip:
+    def __init__(self, size):
+        self.size = size
+        self.x0, self.y0 = 0, 0
+        self.x1, self.y1 = 0, 0
+        self.image = pygame.transform.scale(dop_func.load_image('ship.png', (255, 255, 255)), (size, size))
+
+    def return_image(self):
+        return self.image
+
+    def move(self, cell):
+        self.x1, self.y1 = cell
 
 
 class Board:
@@ -18,12 +33,14 @@ class Board:
         self.left = 10
         self.top = 10
         self.cell_size = 30
+        self.ship = SpaceShip(self.cell_size - 2)
 
-    # настройка внешнего вида
+        # настройка внешнего вида
     def set_view(self, left, top, cell_size):
         self.left = left
         self.top = top
         self.cell_size = cell_size
+        self.ship = SpaceShip(self.cell_size - 2)
 
     def render(self):
         global screen
@@ -38,6 +55,24 @@ class Board:
                                                                     self.top + self.cell_size * (r + 1)),
                                                                    (self.left + self.cell_size * i,
                                                                     self.top + self.cell_size * (r + 1))], 1)
+                if i == self.ship.x0 and r == self.ship.y0:
+                    screen.blit(self.ship.return_image(), (self.left + self.cell_size * i + 1, self.top + self.cell_size * r + 1))
+        for i in range(abs(self.ship.x0 - self.ship.x1)):
+            if self.ship.x0 > self.ship.x1:
+                self.ship.x0 -= 1
+            else:
+                self.ship.x0 += 1
+            screen.blit(self.ship.return_image(),
+                        (self.left + self.cell_size * self.ship.x0 + 1, self.top + self.cell_size * self.ship.y0 + 1))
+            clock.tick(FPS)
+        for i in range(abs(self.ship.y0 - self.ship.y1)):
+            if self.ship.y0 > self.ship.y1:
+                self.ship.y0 -= 1
+            else:
+                self.ship.y0 += 1
+            screen.blit(self.ship.return_image(),
+                        (self.left + self.cell_size * self.ship.x0 + 1, self.top + self.cell_size * self.ship.y0 + 1))
+            clock.tick(FPS)
 
     def get_cell(self, mouse_pos):
         x, y = mouse_pos
@@ -50,7 +85,7 @@ class Board:
         return None
 
     def on_click(self, cell):
-            print(cell)
+        self.ship.move(cell)
 
     def get_click(self, mouse_pos):
         cell = self.get_cell(mouse_pos)

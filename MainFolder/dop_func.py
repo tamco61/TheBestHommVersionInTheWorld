@@ -39,3 +39,7 @@ def generate_level(level):
                 new_player = Player(x, y)
 # вернем игрока, а также размер поля в клетках
     return new_player, x, y
+
+
+def check_save():  # проверяет есть ли сохраненные игры
+    pass
