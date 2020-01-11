@@ -10,6 +10,7 @@ start = time.time()
 
 
 def start_screen():
+    n = 0
     intro_text = ["PRESS ANY KEY"]
     fon = pygame.transform.scale(dop_func.load_image(f'fon{str(random.randint(0, 4))}.jpg'), (screen.get_width(), screen.get_height()))
     screen.blit(fon, (0, 0))
@@ -21,6 +22,11 @@ def start_screen():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 dop_func.terminate()
+        n += 1
+        if n == 8:
+            fon = pygame.transform.scale(dop_func.load_image(f'fon{str(random.randint(0, 4))}.jpg'),
+                                        (screen.get_width(), screen.get_height()))
+            n = 0
         screen.blit(fon, (0, 0))
         if t:
             screen.blit(string_rendered, (screen.get_width() // 2 - string_rendered.get_width() // 2, screen.get_height() // 4 * 3))
