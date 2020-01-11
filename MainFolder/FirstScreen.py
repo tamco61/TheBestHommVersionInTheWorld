@@ -1,7 +1,6 @@
 import pygame, random, time
-import dop_func
+from MainFolder import dop_func
 pygame.init()
-WIDTH, HEIGHT = 800, 600
 screen = pygame.display.set_mode(flags=pygame.FULLSCREEN)
 run = True
 FPS = 2
@@ -14,7 +13,7 @@ def start_screen():
     intro_text = ["PRESS ANY KEY"]
     fon = pygame.transform.scale(dop_func.load_image(f'fon{str(random.randint(0, 4))}.jpg'), (screen.get_width(), screen.get_height()))
     screen.blit(fon, (0, 0))
-    font = pygame.font.Font("data/cosm.ttf", 50)
+    font = pygame.font.Font("FirstScreen/data/cosm.ttf", 50)
     string_rendered = font.render(intro_text[0], 1, pygame.Color('white'))
     t = True
 
