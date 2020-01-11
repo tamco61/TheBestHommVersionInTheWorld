@@ -1,5 +1,6 @@
 import pygame, random, time
 from MainFolder import dop_func
+from MainFolder.mainMenu import menu
 pygame.init()
 screen = pygame.display.set_mode(flags=pygame.FULLSCREEN)
 run = True
@@ -13,25 +14,28 @@ def start_screen():
     intro_text = ["PRESS ANY KEY"]
     fon = pygame.transform.scale(dop_func.load_image(f'fon{str(random.randint(0, 4))}.jpg'), (screen.get_width(), screen.get_height()))
     screen.blit(fon, (0, 0))
-    font = pygame.font.Font("FirstScreen/data/cosm.ttf", 50)
+    font = pygame.font.Font("data/cosm.ttf", 50)
     string_rendered = font.render(intro_text[0], 1, pygame.Color('white'))
-    t = True
+    flag_invis = True
 
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 dop_func.terminate()
-        n += 1
-        if n == 8:
+            elif event.type == pygame.KEYDOWN:
+                menu()
+                return
+        counter_sec += 1
+        if counter_sec == 8:
             fon = pygame.transform.scale(dop_func.load_image(f'fon{str(random.randint(0, 4))}.jpg'),
                                         (screen.get_width(), screen.get_height()))
-            n = 0
+            counter_sec = 0
         screen.blit(fon, (0, 0))
-        if t:
+        if flag_invis:
             screen.blit(string_rendered, (screen.get_width() // 2 - string_rendered.get_width() // 2, screen.get_height() // 4 * 3))
-            t = False
+            flag_invis = False
         else:
-            t = True
+            flag_invis = True
         pygame.display.flip()
         clock.tick(FPS)
 
