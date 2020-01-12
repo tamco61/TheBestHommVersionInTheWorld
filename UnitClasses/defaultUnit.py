@@ -48,13 +48,10 @@ class HeroUnit(DefaultUnit):
         self.bDMG = bonus_damage
         self.bARMOUR = bonus_armour
 
-    def take_damage(self, damage):
+    def get_hpDmgArmour(self):
         h, d, a = self.group.get_bonus()
-        self.hp -= h + int(damage * ((self.armour + a) / (self.armour + a + 10 * damage)))
-
-    def get_damage(self):
-        h, d, a = self.group.get_bonus()
-        return self.dmg + d
+        return self.hp + h, self.dmg + d, self.armour + a
+        #  self.hp -= h + int(damage * ((self.armour + a) / (self.armour + a + 10 * damage)))
 
     def bHP(self):
         return self.bHP
