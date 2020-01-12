@@ -10,7 +10,7 @@ start = time.time()
 
 
 def start_screen():
-    n = 0
+    counter_sec = 0
     intro_text = ["PRESS ANY KEY"]
     fon = pygame.transform.scale(dop_func.load_image(f'fon{str(random.randint(0, 4))}.jpg'), (screen.get_width(), screen.get_height()))
     screen.blit(fon, (0, 0))
