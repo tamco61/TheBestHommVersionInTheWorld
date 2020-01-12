@@ -1,4 +1,5 @@
 import pygame
+import sqlite3
 from MainFolder import dop_func
 
 pygame.init()
@@ -90,6 +91,19 @@ class Board:
     def get_click(self, mouse_pos):
         cell = self.get_cell(mouse_pos)
         self.on_click(cell)
+
+
+def draw_level(number, board):
+    global screen
+
+    sql = sqlite3.connect('level.db')
+    cur = sql.cursor()
+    lst = cur.execute(f"""SELECT * FROM level{number}""").fetchall()
+
+    for i in lst:
+        id, x, y, exit = i
+        image = pygame.transform.scale(dop_func.load_image(f'planet{id}.jpg'), (board.cell_size, board.cell_size))
+        screen.blit(image(board.left + board.cell_size * x + 1, board.top + board.cell_size * y + 1))
 
 
 board = Board(16, 8)
