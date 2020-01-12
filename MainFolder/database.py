@@ -6,9 +6,9 @@ CURSOR = CONNECTION.cursor()
 
 def take_hero(name=0):
     if name:
-        person = CURSOR.execute('SELECT name, hp, dmg, arm, organization FROM heroes WHERE (name = ?)',
+        person = CURSOR.execute('SELECT name, hp, dmg, arm, orm FROM hero WHERE (name = ?)',
                                 (name, )).fetchone()
     else:
-        person = CURSOR.execute('SELECT name, hp, dmg, arm, organization FROM heroes WHERE (id = ?)',
+        person = CURSOR.execute('SELECT name, hp, dmg, arm, orm FROM hero WHERE (id = ?)',
                                 (random.randint(1, 6),)).fetchone()
     return person
