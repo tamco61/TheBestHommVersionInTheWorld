@@ -2,11 +2,12 @@ import pygame, random, time
 from MainFolder import dop_func
 from MainFolder.mainMenu import menu
 pygame.init()
-screen = pygame.display.set_mode(flags=pygame.FULLSCREEN)
+screen = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN)
 run = True
 FPS = 2
 clock = pygame.time.Clock()
 start = time.time()
+pygame.mixer.music.load('data/mus1.mp3')
 
 
 def start_screen():
@@ -17,12 +18,15 @@ def start_screen():
     font = pygame.font.Font("data/cosm.ttf", 50)
     string_rendered = font.render(intro_text[0], 1, pygame.Color('white'))
     flag_invis = True
-
+    pygame.mixer.music.play(-1)
+    pressed_key = pygame.mixer.Sound('data/click2.wav')
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 dop_func.terminate()
             elif event.type == pygame.KEYDOWN:
+                pygame.mixer.Sound.play(pressed_key)
+                pygame.time.delay(500)
                 menu()
                 return
         counter_sec += 1
@@ -32,7 +36,8 @@ def start_screen():
             counter_sec = 0
         screen.blit(fon, (0, 0))
         if flag_invis:
-            screen.blit(string_rendered, (screen.get_width() // 2 - string_rendered.get_width() // 2, screen.get_height() // 4 * 3))
+            screen.blit(string_rendered, (screen.get_width() // 2 - string_rendered.get_width() // 2,
+                                          screen.get_height() // 4 * 3))
             flag_invis = False
         else:
             flag_invis = True
