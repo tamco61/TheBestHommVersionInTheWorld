@@ -1,5 +1,5 @@
 import pygame, random
-from MainFolder import dop_func, database
+from MainFolder import dop_func, database, mainField
 
 pygame.init()
 
@@ -19,7 +19,7 @@ class Button:
         self.active_color = active_color
         self.text_size = text_size
 
-    def draw(self, x, y, text, action=None):
+    def draw(self, x, y, text, action=None, param_action=None):
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
         naved = pygame.mixer.Sound('data/naved.wav')
@@ -33,6 +33,9 @@ class Button:
                             pygame.quit()
                             quit()
                         else:
+                            if param_action:
+                                action(param_action)
+                                return
                             action()
                             return
         else:
@@ -45,6 +48,11 @@ def print_text(text, x, y, font_size=50, font_type='cosm.ttf', color='white'):
     font_type = pygame.font.Font(f"data/{font_type}", font_size)
     mes = font_type.render(text, 1, pygame.Color(color))
     screen.blit(mes, (x, y))
+
+
+def set_captain(name):
+    mainField.run_cycle(name)
+    return
 
 
 def menu():
@@ -78,7 +86,6 @@ def choose_captain():
     heroes = set()
     while len(heroes) != 5:
         heroes.add(database.take_hero())
-    c = 0
     FPS = 60
     heroes = list(heroes)
     image0 = pygame.transform.scale(dop_func.load_image("heroes/" + heroes[0][-1]),
@@ -91,8 +98,8 @@ def choose_captain():
                                     (screen.get_width() // 6, screen.get_height() // 2))
     image4 = pygame.transform.scale(dop_func.load_image("heroes/" + heroes[4][-1]),
                                     (screen.get_width() // 6, screen.get_height() // 2))
+    dct_names = {0: heroes[0][0], 1: heroes[1][0], 2: heroes[2][0], 3: heroes[3][0], 4: heroes[4][0]}
     choose = Button(185, 65, text_size=30)
-    print(heroes)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -100,11 +107,11 @@ def choose_captain():
         screen.fill((255, 255, 255))
         print_text('Выберите капитана', (2 * screen.get_width()) // 6, screen.get_height() // 8, color='black')
         for i in range(0, 5):
-            screen.blit(locals()['image%s' % i], (screen.get_width() // 8 + 0.9 * c * screen.get_width() // 6,
+            screen.blit(locals()['image%s' % i], (screen.get_width() // 8 + 0.9 * i * screen.get_width() // 6,
                                                   screen.get_height() // 5))
-            choose.draw(screen.get_width() // 8 + c * screen.get_width() // 6, 3 * screen.get_height() // 4, "Выбрать")
-            c += 1
-        c = 0
+            choose.draw(screen.get_width() // 8 + i * screen.get_width() // 6, 3 * screen.get_height() // 4, "Выбрать",
+                        set_captain, dct_names[i])
+
         pygame.display.flip()
         clock.tick(FPS)
 

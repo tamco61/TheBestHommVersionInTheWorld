@@ -105,19 +105,20 @@ def draw_level(number, board):
         screen.blit(image, (board.left + board.cell_size * x + 1, board.top + board.cell_size * y + 1))
 
 
-board = Board(16, 8)
-cell_s = WIDTH // 16 - 1
-board.set_view((WIDTH - cell_s * 16) // 2, (HEIGHT - cell_s * 8) // 2, WIDTH // 16 - 1)
-fon = pygame.transform.scale(dop_func.load_image('Space.jpg'), (screen.get_width(), screen.get_height()))
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            dop_func.terminate()
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            board.get_click(event.pos)
-    screen.fill((0, 0, 0))
-    screen.blit(fon, (0, 0))
-    draw_level(1, board)
-    board.render()
+def run_cycle(captain_name):
+    board = Board(16, 8)
+    cell_s = WIDTH // 16 - 1
+    board.set_view((WIDTH - cell_s * 16) // 2, (HEIGHT - cell_s * 8) // 2, WIDTH // 16 - 1)
+    fon = pygame.transform.scale(dop_func.load_image('Space.jpg'), (screen.get_width(), screen.get_height()))
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                dop_func.terminate()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                board.get_click(event.pos)
+        screen.fill((0, 0, 0))
+        screen.blit(fon, (0, 0))
+        draw_level(1, board)
+        board.render()
 
-    pygame.display.flip()
+        pygame.display.flip()
