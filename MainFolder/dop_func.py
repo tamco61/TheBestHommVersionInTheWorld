@@ -15,8 +15,8 @@ def load_level(filename):  # функция для загрузки уровне
 
 
 def load_image(name, colorkey=None):  # функция для загрузки изображений
-    fullname = os.path.join('data', name)
-    image = pygame.image.load(fullname).convert()
+
+    image = pygame.image.load('data/' + name).convert()
     if colorkey is not None:  # проверка на прозрачный фон
         if colorkey == -1:
             colorkey = image.get_at((0, 0))

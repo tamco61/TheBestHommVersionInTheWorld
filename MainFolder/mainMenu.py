@@ -3,7 +3,7 @@ from MainFolder import dop_func, database
 
 pygame.init()
 
-screen = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN)
+screen = pygame.display.set_mode(flags=pygame.FULLSCREEN)
 running = True
 FPS = 10
 clock = pygame.time.Clock()
@@ -41,9 +41,9 @@ class Button:
         print_text(text, x + 10, y + 15, font_size=self.text_size)
 
 
-def print_text(text, x, y, font_size=50, font_type='cosm.ttf'):
+def print_text(text, x, y, font_size=50, font_type='cosm.ttf', color='white'):
     font_type = pygame.font.Font(f"data/{font_type}", font_size)
-    mes = font_type.render(text, 1, pygame.Color('white'))
+    mes = font_type.render(text, 1, pygame.Color(color))
     screen.blit(mes, (x, y))
 
 
@@ -78,17 +78,18 @@ def choose_captain():
     heroes = set()
     while len(heroes) != 5:
         heroes.add(database.take_hero())
-    print(heroes)
     c = 0
+    FPS = 60
     choose = Button(185, 65, text_size=30)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 dop_func.terminate()
-        screen.blit(background, (0, 0))
-        print_text('Выберите капитана', (2 * screen.get_width()) // 6, screen.get_height() // 8)
+        screen.fill((255, 255, 255))
+        print_text('Выберите капитана', (2 * screen.get_width()) // 6, screen.get_height() // 8, color='black')
         for i in heroes:
-            # print_text(i[0], screen.get_width() // 8 + c * screen.get_width() // 6, screen.get_width() // 2, font_size=40)
+            image = pygame.transform.scale(dop_func.load_image("heroes/" + i[-1]), (screen.get_width() // 6, screen.get_height() // 2))
+            screen.blit(image, (screen.get_width() // 8 + 0.9 * c * screen.get_width() // 6, screen.get_height() // 5))
             choose.draw(screen.get_width() // 8 + c * screen.get_width() // 6, 3 * screen.get_height() // 4, "Выбрать")
             c += 1
         c = 0
@@ -96,6 +97,5 @@ def choose_captain():
         clock.tick(FPS)
 
 
-
-
-
+if __name__ == '__main__':
+    choose_captain()

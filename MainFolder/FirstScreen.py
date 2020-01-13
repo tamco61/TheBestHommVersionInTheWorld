@@ -1,8 +1,8 @@
-import pygame, random, time
+import pygame, random, time, sys
 from MainFolder import dop_func
 from MainFolder.mainMenu import menu
 pygame.init()
-screen = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN)
+screen = pygame.display.set_mode(flags=pygame.FULLSCREEN)
 run = True
 FPS = 2
 clock = pygame.time.Clock()
@@ -19,13 +19,13 @@ def start_screen():
     string_rendered = font.render(intro_text[0], 1, pygame.Color('white'))
     flag_invis = True
     pygame.mixer.music.play(-1)
-    pressed_key = pygame.mixer.Sound('data/click2.wav')
+    # pressed_key = pygame.mixer.Sound('data/click2.wav')
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 dop_func.terminate()
             elif event.type == pygame.KEYDOWN:
-                pygame.mixer.Sound.play(pressed_key)
+                # pygame.mixer.Sound.play(pressed_key)
                 pygame.time.delay(500)
                 menu()
                 return
