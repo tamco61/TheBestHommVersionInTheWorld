@@ -80,6 +80,17 @@ def choose_captain():
         heroes.add(database.take_hero())
     c = 0
     FPS = 60
+    heroes = list(heroes)
+    image0 = pygame.transform.scale(dop_func.load_image("heroes/" + heroes[0][-1]),
+                                    (screen.get_width() // 6, screen.get_height() // 2))
+    image1 = pygame.transform.scale(dop_func.load_image("heroes/" + heroes[1][-1]),
+                                    (screen.get_width() // 6, screen.get_height() // 2))
+    image2 = pygame.transform.scale(dop_func.load_image("heroes/" + heroes[2][-1]),
+                                    (screen.get_width() // 6, screen.get_height() // 2))
+    image3 = pygame.transform.scale(dop_func.load_image("heroes/" + heroes[3][-1]),
+                                    (screen.get_width() // 6, screen.get_height() // 2))
+    image4 = pygame.transform.scale(dop_func.load_image("heroes/" + heroes[4][-1]),
+                                    (screen.get_width() // 6, screen.get_height() // 2))
     choose = Button(185, 65, text_size=30)
     while True:
         for event in pygame.event.get():
@@ -87,9 +98,9 @@ def choose_captain():
                 dop_func.terminate()
         screen.fill((255, 255, 255))
         print_text('Выберите капитана', (2 * screen.get_width()) // 6, screen.get_height() // 8, color='black')
-        for i in heroes:
-            image = pygame.transform.scale(dop_func.load_image("heroes/" + i[-1]), (screen.get_width() // 6, screen.get_height() // 2))
-            screen.blit(image, (screen.get_width() // 8 + 0.9 * c * screen.get_width() // 6, screen.get_height() // 5))
+        for i in range(0, 5):
+            screen.blit(locals()['image%s' % i], (screen.get_width() // 8 + 0.9 * c * screen.get_width() // 6,
+                                                  screen.get_height() // 5))
             choose.draw(screen.get_width() // 8 + c * screen.get_width() // 6, 3 * screen.get_height() // 4, "Выбрать")
             c += 1
         c = 0
