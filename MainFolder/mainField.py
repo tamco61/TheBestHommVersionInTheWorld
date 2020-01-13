@@ -1,6 +1,7 @@
 import pygame
 import sqlite3
 from MainFolder import dop_func
+from MainFolder import database
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -96,14 +97,12 @@ class Board:
 def draw_level(number, board):
     global screen
 
-    sql = sqlite3.connect('level.db')
-    cur = sql.cursor()
-    lst = cur.execute(f"""SELECT * FROM level{number}""").fetchall()
+    lst = database.take_planet(number)
 
     for i in lst:
-        id, x, y, exit = i
-        image = pygame.transform.scale(dop_func.load_image(f'planet{id}.jpg'), (board.cell_size, board.cell_size))
-        screen.blit(image(board.left + board.cell_size * x + 1, board.top + board.cell_size * y + 1))
+        id, x, y = i
+        image = pygame.transform.scale(dop_func.load_image(f'planet/{id}.jpg', (255, 255, 255)), (board.cell_size, board.cell_size))
+        screen.blit(image, (board.left + board.cell_size * x + 1, board.top + board.cell_size * y + 1))
 
 
 board = Board(16, 8)
@@ -118,5 +117,7 @@ while True:
             board.get_click(event.pos)
     screen.fill((0, 0, 0))
     screen.blit(fon, (0, 0))
+    draw_level(1, board)
     board.render()
+
     pygame.display.flip()
