@@ -12,3 +12,7 @@ def take_hero(name=0):
         person = CURSOR.execute('SELECT name, hp, dmg, arm, orm FROM hero WHERE (id = ?)',
                                 (random.randint(1, 6),)).fetchone()
     return person
+
+
+def take_planet(number):
+    return CURSOR.execute(f"""SELECT * FROM level{number}""").fetchall()
