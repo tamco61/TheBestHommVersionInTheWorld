@@ -92,6 +92,7 @@ def choose_captain():
     image4 = pygame.transform.scale(dop_func.load_image("heroes/" + heroes[4][-1]),
                                     (screen.get_width() // 6, screen.get_height() // 2))
     choose = Button(185, 65, text_size=30)
+    print(heroes)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
