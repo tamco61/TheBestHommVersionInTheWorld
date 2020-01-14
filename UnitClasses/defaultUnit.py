@@ -28,8 +28,7 @@ class Group:
 
 # Базовый класс
 class DefaultUnit:
-    def __init__(self, id, name, hp, damage, armour):
-        self.id = id
+    def __init__(self, name, hp, damage, armour):
         self.name = name
         self.hp = hp
         self.dmg = damage
@@ -41,12 +40,13 @@ class DefaultUnit:
 
 # Базовый класс героя
 class HeroUnit(DefaultUnit):
-    def __init__(self, id,  name, hp, damage, armour, group, bonus_hp=0, bonus_damage=0, bonus_armour=0):
-        super().__init__(id, name, hp, damage, armour)
+    def __init__(self, name, hp, damage, armour, group, bonus_hp=0, bonus_damage=0, bonus_armour=0, photo=0):
+        super().__init__(name, hp, damage, armour)
         self.group = group
         self.bHP = bonus_hp
         self.bDMG = bonus_damage
         self.bARMOUR = bonus_armour
+        self.photo = photo
 
     def get_hpDmgArmour(self):
         h, d, a = self.group.get_bonus()

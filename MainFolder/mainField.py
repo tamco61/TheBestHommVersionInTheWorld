@@ -13,9 +13,34 @@ FPS = 20
 groupMain = defaultUnit.Group('Main')
 
 # Интерфейс перед боем
-def battleUI():
+def battleUI(planet):
     global screen
-    pass
+    return True
+
+
+class Planet:
+    def __init__(self, id, x, y, lvl):
+        self.id = id
+        self.lvl = lvl
+        self.x = x
+        self.y = y
+        self.status = False
+        self.group = self.group()
+
+    def set_status(self, status):
+        self.status = status
+
+    def group(self):
+        group = defaultUnit.Group('sec')
+        for i in range(self.lvl):
+            name, hp, damage, armour, bonus_hp, bonus_damage, bonus_armour, photo = database.full_hero()
+            hero = defaultUnit.HeroUnit(name, hp, damage, armour, group, bonus_hp, bonus_damage, bonus_armour, photo)
+            group.append_hero(hero)
+        return group
+
+    def status(self):
+        return self.status
+
 
 
 class SpaceShip:
@@ -24,7 +49,6 @@ class SpaceShip:
         self.x0, self.y0 = 0, 0
         self.x1, self.y1 = 0, 0
         self.image = pygame.transform.scale(dop_func.load_image('ship.png', (255, 255, 255)), (size, size))
-        self.image = pygame.transform.flip(self.image, 1, 0)
 
     def return_image(self):
         return self.image
@@ -74,7 +98,6 @@ class Board:
                 self.ship.x0 += 1
             screen.blit(self.ship.return_image(),
                         (self.left + self.cell_size * self.ship.x0 + 1, self.top + self.cell_size * self.ship.y0 + 1))
-            clock.tick(FPS)
         for i in range(abs(self.ship.y0 - self.ship.y1)):
             if self.ship.y0 > self.ship.y1:
                 self.ship.y0 -= 1
@@ -82,7 +105,6 @@ class Board:
                 self.ship.y0 += 1
             screen.blit(self.ship.return_image(),
                         (self.left + self.cell_size * self.ship.x0 + 1, self.top + self.cell_size * self.ship.y0 + 1))
-            clock.tick(FPS)
 
     def get_cell(self, mouse_pos):
         x, y = mouse_pos
@@ -117,8 +139,12 @@ def draw_level(number, board):
 
 def run_cycle(captain_name, LEVEL=1):
     global groupMain
-    groupMain.append_hero(database.take_hero(captain_name))
+    if groupMain.lst == list():
+        name, hp, damage, armour, bonus_hp, bonus_damage, bonus_armour, photo = list(database.full_hero(captain_name))
+        Hero = defaultUnit.HeroUnit(name, hp, damage, armour, groupMain, bonus_hp, bonus_damage, bonus_armour, photo)
+        groupMain.append_hero(Hero)
     board = Board(16, 8)
+    lst_planet = [Planet(i[0], i[1], i[2], LEVEL) for i in database.take_planet(LEVEL)]
     cell_s = WIDTH // 16 - 1
     board.set_view((WIDTH - cell_s * 16) // 2, (HEIGHT - cell_s * 8) // 2, WIDTH // 16 - 1)
     fon = pygame.transform.scale(dop_func.load_image('Space.jpg'), (screen.get_width(), screen.get_height()))
@@ -129,13 +155,14 @@ def run_cycle(captain_name, LEVEL=1):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
                 board.get_click(event.pos)
-                for i in lst_planet:
-                    if i[1] == x and i[2] == y:
-                        battleUI()
+                for i in range(len(lst_planet)):
+                    if lst_planet[i].x == x and lst_planet[i].y == y:
+                        if battleUI(lst_planet[i]):
+                            lst_planet[i].set_status(True)
                         break
         screen.fill((0, 0, 0))
         screen.blit(fon, (0, 0))
-        lst_planet = draw_level(LEVEL, board)
+        draw_level(LEVEL, board)
         board.render()
 
         pygame.display.flip()
