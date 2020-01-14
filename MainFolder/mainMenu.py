@@ -11,7 +11,7 @@ WIDTH, HEIGHT = screen.get_width(), screen.get_height()
 pygame.mixer.music.load('data/mus1.mp3')
 
 
-class Button:
+class Button:  # класс для создания кнопок
     def __init__(self, width, height, inactive_color=(150, 150, 150), active_color=(0, 0, 0), text_size=50):
         self.width = width
         self.height = height
@@ -44,18 +44,18 @@ class Button:
         print_text(text, x + 10, y + 15, font_size=self.text_size)
 
 
-def print_text(text, x, y, font_size=50, font_type='cosm.ttf', color='white'):
+def print_text(text, x, y, font_size=50, font_type='cosm.ttf', color='white'):  # функция для вывода текста
     font_type = pygame.font.Font(f"data/{font_type}", font_size)
     mes = font_type.render(text, 1, pygame.Color(color))
     screen.blit(mes, (x, y))
 
 
-def set_captain(name):
+def set_captain(name):  # переход к основному игровому полю
     mainField.run_cycle(name)
     return
 
 
-def draw_stat(lst, lst1):
+def draw_stat(lst, lst1):  # вывод стат
     print_text(lst[0], lst1[1][0] + WIDTH // 20, lst1[1][1] + HEIGHT // 6, font_size=25, color='black',
                font_type='stat.ttf')
     print_text(f'Hit Point {lst[1]}', lst1[1][0] + WIDTH // 20, lst1[1][1] + HEIGHT // 6 + 35, font_size=25,
@@ -68,7 +68,7 @@ def draw_stat(lst, lst1):
                color='black', font_type='stat.ttf')
 
 
-def menu():
+def menu():  # стартовое меню
     fon = pygame.transform.scale(dop_func.load_image(f'fon{str(random.randint(0, 4))}.jpg'),
                                  (screen.get_width(), screen.get_height()))
     start_game = Button(350, 80)
@@ -80,20 +80,23 @@ def menu():
             if event.type == pygame.QUIT:
                 dop_func.terminate()
         counter_sec += 1
-        if counter_sec == 40:
+        if counter_sec == 40:  # смена фона
             fon = pygame.transform.scale(dop_func.load_image(f'fon{str(random.randint(0, 4))}.jpg'),
                                          (screen.get_width(), screen.get_height()))
             counter_sec = 0
         screen.blit(fon, (0, 0))
-        start_game.draw(screen.get_width() // 2 - start_game.width // 2,
-                        screen.get_height() // 4 * 2.5 - 200, 'Новая игра', choose_captain)
+        if dop_func.check_save():
+            pass
+        else:
+            start_game.draw(screen.get_width() // 2 - start_game.width // 2,
+                            screen.get_height() // 4 * 2.5 - 200, 'Новая игра', choose_captain)
         quit_button.draw(screen.get_width() // 2 - quit_button.width // 2, screen.get_height() // 4 * 2.5 - 100,
                          'Выйти', quit)
         pygame.display.flip()
         clock.tick(FPS)
 
 
-def choose_captain():
+def choose_captain():  # выбор капитана, очень много костылей, лучше не смотреть код
     background = pygame.transform.scale(dop_func.load_image(f'board.jpg'),
                                  (screen.get_width(), screen.get_height()))
     heroes = set()
@@ -120,7 +123,7 @@ def choose_captain():
         print_text('Выберите капитана', (2 * WIDTH) // 6, HEIGHT // 8, color='black')
         for i in range(0, 5):
             choose.draw(3 * WIDTH // 30 + i * WIDTH // 6, 3 * HEIGHT // 4, "Выбрать",
-                        set_captain, dct_names[i])
+                        set_captain, dct_names[i][0 ])
             if len(dct_names[i]) == 1:
                 dct_names[i] = [dct_names[i][0], (3 * WIDTH // 50 + 8 * i * image0.get_width() // 9,
                                                   HEIGHT // 5),

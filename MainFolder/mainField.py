@@ -12,6 +12,7 @@ WIDTH, HEIGHT = screen.get_width(), screen.get_height()
 FPS = 20
 groupMain = defaultUnit.Group('Main')
 
+
 # Интерфейс перед боем
 def battleUI(planet):
     global screen
@@ -40,7 +41,6 @@ class Planet:
 
     def status(self):
         return self.status
-
 
 
 class SpaceShip:
@@ -153,7 +153,7 @@ def run_cycle(captain_name, LEVEL=1):
             if event.type == pygame.QUIT:
                 dop_func.terminate()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = event.pos
+                x, y = board.get_cell(event.pos)
                 board.get_click(event.pos)
                 for i in range(len(lst_planet)):
                     if lst_planet[i].x == x and lst_planet[i].y == y:
