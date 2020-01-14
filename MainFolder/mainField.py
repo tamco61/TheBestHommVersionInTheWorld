@@ -2,6 +2,7 @@ import pygame
 import sqlite3
 from MainFolder import dop_func
 from MainFolder import database
+from UnitClasses import defaultUnit
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -9,6 +10,7 @@ all_sprites = pygame.sprite.Group()
 screen = pygame.display.set_mode(flags=pygame.FULLSCREEN)
 WIDTH, HEIGHT = screen.get_width(), screen.get_height()
 FPS = 20
+groupMain = defaultUnit.Group('Main')
 
 
 class SpaceShip:
@@ -106,6 +108,8 @@ def draw_level(number, board):
 
 
 def run_cycle(captain_name):
+    global groupMain
+    groupMain.append_hero(database.take_hero(captain_name))
     board = Board(16, 8)
     cell_s = WIDTH // 16 - 1
     board.set_view((WIDTH - cell_s * 16) // 2, (HEIGHT - cell_s * 8) // 2, WIDTH // 16 - 1)
