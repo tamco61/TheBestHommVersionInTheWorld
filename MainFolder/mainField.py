@@ -12,6 +12,11 @@ WIDTH, HEIGHT = screen.get_width(), screen.get_height()
 FPS = 20
 groupMain = defaultUnit.Group('Main')
 
+# Интерфейс перед боем
+def battleUI():
+    global screen
+    pass
+
 
 class SpaceShip:
     def __init__(self, size):
@@ -99,15 +104,17 @@ class Board:
 def draw_level(number, board):
     global screen
 
-    lst = database.take_planet(number)
+    lst_planet = database.take_planet(number)
 
-    for i in lst:
+    for i in lst_planet:
         id, x, y = i
         image = pygame.transform.scale(dop_func.load_image(f'planet/{id}.jpg', (255, 255, 255)), (board.cell_size, board.cell_size))
         screen.blit(image, (board.left + board.cell_size * x + 1, board.top + board.cell_size * y + 1))
 
+    return lst_planet
 
-def run_cycle(captain_name):
+
+def run_cycle(captain_name, LEVEL=1):
     global groupMain
     groupMain.append_hero(database.take_hero(captain_name))
     board = Board(16, 8)
@@ -119,10 +126,15 @@ def run_cycle(captain_name):
             if event.type == pygame.QUIT:
                 dop_func.terminate()
             if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
                 board.get_click(event.pos)
+                for i in lst_planet:
+                    if i[1] == x and i[2] == y:
+                        battleUI()
+                        break
         screen.fill((0, 0, 0))
         screen.blit(fon, (0, 0))
-        draw_level(1, board)
+        lst_planet = draw_level(LEVEL, board)
         board.render()
 
         pygame.display.flip()
