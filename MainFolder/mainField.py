@@ -39,7 +39,7 @@ class Planet:
             group.append_hero(hero)
         return group
 
-    def status(self):
+    def get_status(self):
         return self.status
 
 
@@ -154,12 +154,18 @@ def run_cycle(captain_name, LEVEL=1):
                 dop_func.terminate()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = board.get_cell(event.pos)
-                board.get_click(event.pos)
+                flag = True
                 for i in range(len(lst_planet)):
                     if lst_planet[i].x == x and lst_planet[i].y == y:
-                        if battleUI(lst_planet[i]):
-                            lst_planet[i].set_status(True)
-                        break
+                        if lst_planet[i].get_status() is False:
+                            board.get_click(event.pos)
+                            if battleUI(lst_planet[i]):
+                                lst_planet[i].set_status(True)
+                        else:
+                            flag = False
+                            break
+                if flag:
+                    board.get_click(event.pos)
         screen.fill((0, 0, 0))
         screen.blit(fon, (0, 0))
         draw_level(LEVEL, board)
