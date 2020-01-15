@@ -2,6 +2,7 @@ import sqlite3, random
 
 CONNECTION = sqlite3.connect('data/starWars.db')
 CURSOR = CONNECTION.cursor()
+TAKED_HERO = set()
 
 
 def full_hero(name=0):
