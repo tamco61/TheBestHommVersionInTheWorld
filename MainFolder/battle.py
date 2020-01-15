@@ -17,10 +17,10 @@ def battle(group1, group2):
             hp2, dmg2, armour2 = lst2[random.randint(0, len(lst2) - 1)]
             if hp1 <= 0:
                 continue
-            if hp2 <= 0:
+            if hp2 <= 0 and random.randint(0, 100) in range(0, 86):
                 continue
             hp2 -= int(dmg1 * (armour2 / (armour2 + 10 * dmg1)))
-            if hp2 <= 0:
+            if hp2 <= 0 and random.randint(0, 100) in range(0, 86):
                 continue
             hp1 -= int(dmg2 * (armour1 / (armour1 + 10 * dmg2)))
 
