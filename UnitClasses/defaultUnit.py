@@ -8,7 +8,7 @@ class Group:
         bDMG = 0
         bARMOUR = 0
         for i in self.lst:
-            if i.name() == hero.name():
+            if i.name == hero:
                 continue
             bHP += i.bHP()
             bDMG += i.bDMG()
@@ -49,7 +49,7 @@ class HeroUnit(DefaultUnit):
         self.photo = photo
 
     def get_hpDmgArmour(self):
-        h, d, a = self.group.get_bonus()
+        h, d, a = self.group.get_bonus(self.name)
         return self.hp + h, self.dmg + d, self.armour + a
         #  self.hp -= h + int(damage * ((self.armour + a) / (self.armour + a + 10 * damage)))
 
