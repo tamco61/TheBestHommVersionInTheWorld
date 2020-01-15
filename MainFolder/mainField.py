@@ -3,6 +3,7 @@ import sqlite3
 from MainFolder import dop_func
 from MainFolder import database
 from UnitClasses import defaultUnit
+from MainFolder import battle
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -15,8 +16,10 @@ groupMain = defaultUnit.Group('Main')
 
 # Интерфейс перед боем
 def battleUI(planet):
-    global screen
-    return True
+    global screen, groupMain
+    if battle.battle(groupMain, planet.group):
+        return True
+    return False
 
 
 class Planet:

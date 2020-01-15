@@ -2,14 +2,14 @@ import random
 
 
 def battle(group1, group2):
-    lst1, lst2 = group1.lst(), group2.lst()
+    lst1, lst2 = group1.lst, group2.lst
     lst = list()
     for i in lst1:
-        lst.append(i.gethpDmgArmour())
+        lst.append(i.get_hpDmgArmour())
     lst1 = lst.copy()
     lst.clear()
     for i in lst2:
-        lst.append(i.gethpDmgArmour())
+        lst.append(i.get_hpDmgArmour())
     lst2 = lst.copy()
     while True:
         for i in range(0, len(lst1)):
