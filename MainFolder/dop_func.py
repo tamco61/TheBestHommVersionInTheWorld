@@ -1,17 +1,9 @@
-import pygame, sys, os
+import pygame, sys
 
 
 def terminate():  # при вызове функции игра завершается
     pygame.quit()
     sys.exit()
-
-
-def load_level(filename):  # функция для загрузки уровней
-    filename = "data/" + filename
-    with open(filename, 'r') as mapFile:
-        level_map = [line.strip() for line in mapFile]
-    max_width = max(map(len, level_map))
-    return list(map(lambda x: x.ljust(max_width, '.'), level_map))
 
 
 def load_image(name, colorkey=None):  # функция для загрузки изображений
@@ -26,20 +18,11 @@ def load_image(name, colorkey=None):  # функция для загрузки �
     return image
 
 
-def generate_level(level):
-    new_player, x, y = None, None, None
-    for y in range(len(level)):
-        for x in range(len(level[y])):
-            if level[y][x] == '.':
-                Tile('empty', x, y)
-            elif level[y][x] == '#':
-                Tile('wall', x, y)
-            elif level[y][x] == '@':
-                Tile('empty', x, y)
-                new_player = Player(x, y)
-# вернем игрока, а также размер поля в клетках
-    return new_player, x, y
-
-
 def check_save():  # проверяет есть ли сохраненные игры
     pass
+
+
+def print_text(screen, text, x, y, font_size=50, font_type='cosm.ttf', color='white'):  # функция для вывода текста
+    font_type = pygame.font.Font(f"data/{font_type}", font_size)
+    mes = font_type.render(text, 1, pygame.Color(color))
+    screen.blit(mes, (x, y))

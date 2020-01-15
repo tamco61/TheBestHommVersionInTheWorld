@@ -41,13 +41,7 @@ class Button:  # класс для создания кнопок
         else:
             pygame.draw.rect(screen, self.inactive_color, (x, y, self.width, self.height))
 
-        print_text(text, x + 10, y + 15, font_size=self.text_size)
-
-
-def print_text(text, x, y, font_size=50, font_type='cosm.ttf', color='white'):  # функция для вывода текста
-    font_type = pygame.font.Font(f"data/{font_type}", font_size)
-    mes = font_type.render(text, 1, pygame.Color(color))
-    screen.blit(mes, (x, y))
+        dop_func.print_text(screen, text, x + 10, y + 15, font_size=self.text_size)
 
 
 def set_captain(name):  # переход к основному игровому полю
@@ -57,15 +51,15 @@ def set_captain(name):  # переход к основному игровому 
 
 
 def draw_stat(lst, lst1):  # вывод стат
-    print_text(lst[0], lst1[1][0] + WIDTH // 20, lst1[1][1] + HEIGHT // 6, font_size=25, color='black',
+    dop_func.print_text(screen, lst[0], lst1[1][0] + WIDTH // 20, lst1[1][1] + HEIGHT // 6, font_size=25, color='black',
                font_type='stat.ttf')
-    print_text(f'Hit Point {lst[1]}', lst1[1][0] + WIDTH // 20, lst1[1][1] + HEIGHT // 6 + 35, font_size=25,
+    dop_func.print_text(screen, f'Hit Point {lst[1]}', lst1[1][0] + WIDTH // 20, lst1[1][1] + HEIGHT // 6 + 35, font_size=25,
                color='black', font_type='stat.ttf')
-    print_text(f'Damage {lst[2]}', lst1[1][0] + WIDTH // 20, lst1[1][1] + HEIGHT // 6 + 70, font_size=25,
+    dop_func.print_text(screen, f'Damage {lst[2]}', lst1[1][0] + WIDTH // 20, lst1[1][1] + HEIGHT // 6 + 70, font_size=25,
                color='black', font_type='stat.ttf')
-    print_text(f'Armour {lst[3]}', lst1[1][0] + WIDTH // 20, lst1[1][1] + HEIGHT // 6 + 105, font_size=25,
+    dop_func.print_text(screen, f'Armour {lst[3]}', lst1[1][0] + WIDTH // 20, lst1[1][1] + HEIGHT // 6 + 105, font_size=25,
                color='black', font_type='stat.ttf')
-    print_text(f'{lst[4]}', lst1[1][0] + WIDTH // 20, lst1[1][1] + HEIGHT // 6 + 140, font_size=25,
+    dop_func.print_text(screen, f'{lst[4]}', lst1[1][0] + WIDTH // 20, lst1[1][1] + HEIGHT // 6 + 140, font_size=25,
                color='black', font_type='stat.ttf')
 
 
@@ -124,7 +118,7 @@ def choose_captain():  # выбор капитана, очень много ко
             if event.type == pygame.QUIT:
                 dop_func.terminate()
         screen.fill((255, 255, 255))
-        print_text('Выберите капитана', (2 * WIDTH) // 6, HEIGHT // 8, color='black')
+        dop_func.print_text(screen, 'Выберите капитана', (2 * WIDTH) // 6, HEIGHT // 8, color='black')
         for i in range(0, 5):
             choose.draw(3 * WIDTH // 30 + i * WIDTH // 6, 3 * HEIGHT // 4, "Выбрать",
                         set_captain, dct_names[i][0 ])

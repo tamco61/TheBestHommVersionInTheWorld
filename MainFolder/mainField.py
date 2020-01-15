@@ -137,12 +137,16 @@ def run_cycle(captain_name, LEVEL=1):
     cell_s = WIDTH // 16 - 1
     board.set_view((WIDTH - cell_s * 16) // 2, (HEIGHT - cell_s * 8) // 2, WIDTH // 16 - 1)
     fon = pygame.transform.scale(dop_func.load_image('Space.jpg'), (screen.get_width(), screen.get_height()))
+    flag = True
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 dop_func.terminate()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = board.get_cell(event.pos)
+                cell = board.get_cell(event.pos)
+                if cell is None:
+                    break
+                x, y = cell
                 flag = True
                 for i in range(len(lst_planet)):
                     if lst_planet[i].x == x and lst_planet[i].y == y:
@@ -151,13 +155,16 @@ def run_cycle(captain_name, LEVEL=1):
                             if battleUI(lst_planet[i]):
                                 lst_planet[i].set_status(True)
                         else:
+
                             flag = False
                             break
                 if flag:
                     board.get_click(event.pos)
+
         screen.fill((0, 0, 0))
         screen.blit(fon, (0, 0))
         draw_level(LEVEL, board)
         board.render()
-
+        if flag is False:
+            dop_func.print_text(screen, 'Планета уже захвачена', WIDTH // 2 - WIDTH // 5, HEIGHT // 2 - HEIGHT // 20)
         pygame.display.flip()
