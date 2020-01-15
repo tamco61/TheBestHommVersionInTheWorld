@@ -52,6 +52,7 @@ class SpaceShip:
         self.x0, self.y0 = 0, 0
         self.x1, self.y1 = 0, 0
         self.image = pygame.transform.scale(dop_func.load_image('ship.png', (255, 255, 255)), (size, size))
+        self.image = pygame.transform.flip(self.image, 1, 0)
 
     def return_image(self):
         return self.image
