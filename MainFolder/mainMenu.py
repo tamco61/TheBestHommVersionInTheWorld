@@ -51,6 +51,7 @@ def print_text(text, x, y, font_size=50, font_type='cosm.ttf', color='white'):  
 
 
 def set_captain(name):  # переход к основному игровому полю
+    database.TAKED_HERO.add(name)
     mainField.run_cycle(name)
     return
 
@@ -101,7 +102,10 @@ def choose_captain():  # выбор капитана, очень много ко
                                  (screen.get_width(), screen.get_height()))
     heroes = set()
     while len(heroes) != 5:
-        heroes.add(database.take_hero())
+        hero = database.take_hero()
+        if hero[0] in database.TAKED_HERO:
+            continue
+        heroes.add(hero)
     heroes = list(heroes)
     image0 = pygame.transform.scale(dop_func.load_image("heroes/" + heroes[0][-1]),
                                     (5 * screen.get_width() // 26, screen.get_height() // 2))
