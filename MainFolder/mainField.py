@@ -92,22 +92,8 @@ class Board:
                                                                     self.top + self.cell_size * (r + 1)),
                                                                    (self.left + self.cell_size * i,
                                                                     self.top + self.cell_size * (r + 1))], 1)
-                if i == self.ship.x0 and r == self.ship.y0:
-                    screen.blit(self.ship.return_image(), (self.left + self.cell_size * i + 1, self.top + self.cell_size * r + 1))
-        for i in range(abs(self.ship.x0 - self.ship.x1)):
-            if self.ship.x0 > self.ship.x1:
-                self.ship.x0 -= 1
-            else:
-                self.ship.x0 += 1
-            screen.blit(self.ship.return_image(),
-                        (self.left + self.cell_size * self.ship.x0 + 1, self.top + self.cell_size * self.ship.y0 + 1))
-        for i in range(abs(self.ship.y0 - self.ship.y1)):
-            if self.ship.y0 > self.ship.y1:
-                self.ship.y0 -= 1
-            else:
-                self.ship.y0 += 1
-            screen.blit(self.ship.return_image(),
-                        (self.left + self.cell_size * self.ship.x0 + 1, self.top + self.cell_size * self.ship.y0 + 1))
+        screen.blit(self.ship.return_image(),
+                    (self.left + self.cell_size * self.ship.x1 + 1, self.top + self.cell_size * self.ship.y1 + 1))
 
     def get_cell(self, mouse_pos):
         x, y = mouse_pos
