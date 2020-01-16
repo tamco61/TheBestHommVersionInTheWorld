@@ -26,9 +26,7 @@ def battle(tuple):
 
         for i in lst1:
             if i[0] > 0:
-
                 return True
-
         for i in lst2:
             if i[0] > 0:
                 return False

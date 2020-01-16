@@ -19,6 +19,7 @@ class Button:  # класс для создания кнопок
         self.active_color = active_color
         self.text_size = text_size
         self.font_type = font_type
+        self.action = None
 
     def draw(self, x, y, text, action=None, param_action=None):
         mouse = pygame.mouse.get_pos()
@@ -33,7 +34,8 @@ class Button:  # класс для создания кнопок
                         if action == quit:
                             pygame.quit()
                             quit()
-                        elif action == battle.battle:
+                        elif action == 'battle':
+                            self.action = battle.battle(param_action)
                             if battle.battle(param_action):
                                 mainField.battleUI(flag=True, res=True)
                             else:
@@ -48,6 +50,9 @@ class Button:  # класс для создания кнопок
             pygame.draw.rect(screen, self.inactive_color, (x, y, self.width, self.height))
 
         dop_func.print_text(screen, text, x + 10, y + 15, font_size=self.text_size, font_type=self.font_type)
+
+    def ret(self):
+        return self.action
 
 
 def set_captain(name):  # переход к основному игровому полю

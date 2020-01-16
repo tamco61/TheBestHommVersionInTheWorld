@@ -3,7 +3,7 @@ from MainFolder import dop_func
 from MainFolder import database
 from UnitClasses import defaultUnit
 from MainFolder import battle
-from MainFolder.mainMenu import Button
+from MainFolder import mainMenu
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -21,12 +21,20 @@ def battleUI(planet=None, flag=False, res=None):
         return res
     fon = pygame.transform.scale(dop_func.load_image('fone.jpg'), (WIDTH, HEIGHT))
     not_ours_lst = planet.get_group().get_lst()
-    start_but = Button(310, 75, font_type='stat.ttf')
+    start_but = mainMenu.Button(310, 75, font_type='stat.ttf')
 
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 dop_func.terminate()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                if x in range(WIDTH // 2 - start_but.width // 2, WIDTH // 2 + start_but.width // 2):
+                    if y in range(HEIGHT // 2 + HEIGHT // 3, HEIGHT // 2 + HEIGHT // 3 + 75):
+                        start_but.draw(WIDTH // 2 - start_but.width // 2, HEIGHT // 2 + HEIGHT // 3, "Начать игру",
+                                       'battle',
+                                       (groupMain, planet.group))
+                        return start_but.ret()
         screen.blit(fon, (0, 0))
         our_lst = groupMain.get_lst()
         hp, damage, armour = 0, 0, 0
@@ -58,10 +66,9 @@ def battleUI(planet=None, flag=False, res=None):
             dop_func.print_text(screen, f'HP {hp} DMG {damage} ARM {armour}', WIDTH // 2, HEIGHT // 2 + HEIGHT // 6,
                                 font_type='stat.ttf',
                                 font_size=35)
-        start_but.draw(WIDTH // 2 - start_but.width // 2, HEIGHT // 2 + HEIGHT // 3, "Начать игру", battle.battle,
+        start_but.draw(WIDTH // 2 - start_but.width // 2, HEIGHT // 2 + HEIGHT // 3, "Начать игру", 'battle',
                        (groupMain, planet.group))
         pygame.display.flip()
-
 
 
 class Planet:
