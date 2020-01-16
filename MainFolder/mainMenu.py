@@ -1,5 +1,5 @@
 import pygame, random
-from MainFolder import dop_func, database, mainField
+from MainFolder import dop_func, database, mainField, battle
 
 pygame.init()
 
@@ -12,12 +12,13 @@ pygame.mixer.music.load('data/mus1.mp3')
 
 
 class Button:  # класс для создания кнопок
-    def __init__(self, width, height, inactive_color=(150, 150, 150), active_color=(0, 0, 0), text_size=50):
+    def __init__(self, width, height, inactive_color=(150, 150, 150), active_color=(0, 0, 0), text_size=50, font_type='cosm.ttf'):
         self.width = width
         self.height = height
         self.inactive_color = inactive_color
         self.active_color = active_color
         self.text_size = text_size
+        self.font_type = font_type
 
     def draw(self, x, y, text, action=None, param_action=None):
         mouse = pygame.mouse.get_pos()
@@ -32,6 +33,11 @@ class Button:  # класс для создания кнопок
                         if action == quit:
                             pygame.quit()
                             quit()
+                        elif action == battle.battle:
+                            if battle.battle(param_action):
+                                mainField.battleUI(flag=True, res=True)
+                            else:
+                                mainField.battleUI(flag=True, res=False)
                         else:
                             if param_action:
                                 action(param_action)
@@ -41,7 +47,7 @@ class Button:  # класс для создания кнопок
         else:
             pygame.draw.rect(screen, self.inactive_color, (x, y, self.width, self.height))
 
-        dop_func.print_text(screen, text, x + 10, y + 15, font_size=self.text_size)
+        dop_func.print_text(screen, text, x + 10, y + 15, font_size=self.text_size, font_type=self.font_type)
 
 
 def set_captain(name):  # переход к основному игровому полю

@@ -1,9 +1,9 @@
 import pygame
-import sqlite3
 from MainFolder import dop_func
 from MainFolder import database
 from UnitClasses import defaultUnit
 from MainFolder import battle
+from MainFolder.mainMenu import Button
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -15,11 +15,53 @@ groupMain = defaultUnit.Group('Main')
 
 
 # Интерфейс перед боем
-def battleUI(planet):
+def battleUI(planet=None, flag=False, res=None):
     global screen, groupMain
-    if battle.battle(groupMain, planet.group):
-        return True
-    return False
+    if flag:
+        return res
+    fon = pygame.transform.scale(dop_func.load_image('fone.jpg'), (WIDTH, HEIGHT))
+    not_ours_lst = planet.get_group().get_lst()
+    start_but = Button(310, 75, font_type='stat.ttf')
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                dop_func.terminate()
+        screen.blit(fon, (0, 0))
+        our_lst = groupMain.get_lst()
+        hp, damage, armour = 0, 0, 0
+        for i in range(len(our_lst)):
+            dop_func.print_text(screen, 'Ваши герои', WIDTH // 15, HEIGHT // 20, font_type='stat.ttf', font_size=60)
+            dop_func.print_text(screen, f'{our_lst[i].name} HP {our_lst[i].hp} DMG {our_lst[i].dmg} ARM '
+                                        f'{our_lst[i].armour}', WIDTH // 15, i * HEIGHT // 10 + HEIGHT // 5,
+                                font_type='stat.ttf', font_size=35)
+            dop_func.print_text(screen, 'Общие статы', WIDTH // 15, HEIGHT // 2 + HEIGHT // 8, font_type='stat.ttf',
+                                font_size=45)
+            hp += int(our_lst[i].hp)
+            damage += int(our_lst[i].dmg)
+            armour += int(our_lst[i].armour)
+        dop_func.print_text(screen, f'HP {hp} DMG {damage} ARM {armour}', WIDTH // 15, HEIGHT // 2 + HEIGHT // 6,
+                            font_type='stat.ttf',
+                            font_size=35)
+        hp, damage, armour = 0, 0, 0
+        for i in range(len(not_ours_lst)):
+            dop_func.print_text(screen, 'Герои противника', WIDTH // 2, HEIGHT // 20, font_type='stat.ttf', font_size=60)
+            dop_func.print_text(screen,
+                                f'{not_ours_lst[i].name} HP {not_ours_lst[i].hp} DMG {not_ours_lst[i].dmg} ARM '
+                                f'{not_ours_lst[i].armour}',
+                                WIDTH // 2, i * HEIGHT // 10 + HEIGHT // 5, font_type='stat.ttf', font_size=35)
+            dop_func.print_text(screen, 'Общие статы', WIDTH // 2, HEIGHT // 2 + HEIGHT // 8, font_type='stat.ttf',
+                                font_size=45)
+            hp += int(not_ours_lst[i].hp)
+            damage += int(not_ours_lst[i].dmg)
+            armour += int(not_ours_lst[i].armour)
+            dop_func.print_text(screen, f'HP {hp} DMG {damage} ARM {armour}', WIDTH // 2, HEIGHT // 2 + HEIGHT // 6,
+                                font_type='stat.ttf',
+                                font_size=35)
+        start_but.draw(WIDTH // 2 - start_but.width // 2, HEIGHT // 2 + HEIGHT // 3, "Начать игру", battle.battle,
+                       (groupMain, planet.group))
+        pygame.display.flip()
+
 
 
 class Planet:
@@ -29,15 +71,15 @@ class Planet:
         self.x = x
         self.y = y
         self.status = False
-        self.group = self.group()
+        self.group = self.get_group()
 
     def set_status(self, status):
         self.status = status
 
-    def group(self):
+    def get_group(self):
         group = defaultUnit.Group('sec')
         for i in range(self.lvl):
-            name, hp, damage, armour, bonus_hp, bonus_damage, bonus_armour, photo = database.full_hero()
+            name, hp, damage, armour, bonus_hp, bonus_damage, bonus_armour, photo = database.full_hero('Дарт Сидиус')
             hero = defaultUnit.HeroUnit(name, hp, damage, armour, group, bonus_hp, bonus_damage, bonus_armour, photo)
             group.append_hero(hero)
         return group
@@ -137,7 +179,7 @@ def run_cycle(captain_name, LEVEL=1):
     lst_planet = [Planet(i[0], i[1], i[2], LEVEL) for i in database.take_planet(LEVEL)]
     cell_s = WIDTH // 16 - 1
     board.set_view((WIDTH - cell_s * 16) // 2, (HEIGHT - cell_s * 8) // 2, WIDTH // 16 - 1)
-    fon = pygame.transform.scale(dop_func.load_image('Space.jpg'), (screen.get_width(), screen.get_height()))
+    fon = pygame.transform.scale(dop_func.load_image('Space.jpg'), (WIDTH, HEIGHT))
     flag = True
     while True:
         for event in pygame.event.get():
@@ -156,7 +198,6 @@ def run_cycle(captain_name, LEVEL=1):
                             if battleUI(lst_planet[i]):
                                 lst_planet[i].set_status(True)
                         else:
-
                             flag = False
                             break
                 if flag:

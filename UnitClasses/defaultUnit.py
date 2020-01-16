@@ -22,7 +22,7 @@ class Group:
     def remove_hero(self, index):
         self.lst.remove(index)
 
-    def lst(self):
+    def get_lst(self):
         return self.lst
 
 

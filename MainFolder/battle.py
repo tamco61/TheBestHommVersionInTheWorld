@@ -1,8 +1,8 @@
 import random
 
 
-def battle(group1, group2):
-    lst1, lst2 = group1.lst, group2.lst
+def battle(tuple):
+    lst1, lst2 = tuple[0].lst, tuple[1].lst
     lst = list()
     for i in lst1:
         lst.append(i.get_hpDmgArmour())
@@ -26,6 +26,7 @@ def battle(group1, group2):
 
         for i in lst1:
             if i[0] > 0:
+
                 return True
 
         for i in lst2:
