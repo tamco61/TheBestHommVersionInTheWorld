@@ -40,6 +40,8 @@ class Button:  # класс для создания кнопок
                                 mainField.battleUI(flag=True, res=True)
                             else:
                                 mainField.battleUI(flag=True, res=False)
+                        elif action == 'set_captain':
+                            set_captain(param_action[0], param_action[1])
                         else:
                             if param_action:
                                 action(param_action)
@@ -55,9 +57,9 @@ class Button:  # класс для создания кнопок
         return self.action
 
 
-def set_captain(name):  # переход к основному игровому полю
+def set_captain(name, LEVEL=1):  # переход к основному игровому полю
     database.TAKED_HERO.add(name)
-    mainField.run_cycle(name)
+    mainField.run_cycle(name, LEVEL)
     return
 
 
@@ -102,7 +104,7 @@ def menu():  # стартовое меню
         clock.tick(FPS)
 
 
-def choose_captain():  # выбор капитана, очень много костылей, лучше не смотреть код
+def choose_captain(LEVEL=1):  # выбор капитана, очень много костылей, лучше не смотреть код
     background = pygame.transform.scale(dop_func.load_image(f'board.jpg'),
                                  (screen.get_width(), screen.get_height()))
     heroes = set()
@@ -129,10 +131,10 @@ def choose_captain():  # выбор капитана, очень много ко
             if event.type == pygame.QUIT:
                 dop_func.terminate()
         screen.fill((255, 255, 255))
-        dop_func.print_text(screen, 'Выберите капитана', (2 * WIDTH) // 6, HEIGHT // 8, color='black')
+        dop_func.print_text(screen, 'Выберите героя', (2 * WIDTH) // 6, HEIGHT // 8, color='black')
         for i in range(0, 5):
             choose.draw(3 * WIDTH // 30 + i * WIDTH // 6, 3 * HEIGHT // 4, "Выбрать",
-                        set_captain, dct_names[i][0 ])
+                        "set_captain", (dct_names[i][0], LEVEL))
             if len(dct_names[i]) == 1:
                 dct_names[i] = [dct_names[i][0], (3 * WIDTH // 50 + 8 * i * image0.get_width() // 9,
                                                   HEIGHT // 5),
