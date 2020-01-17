@@ -215,8 +215,15 @@ def run_cycle(captain_name, LEVEL=1):
                 if cell is None:
                     break
                 x, y = cell
+
                 if x == 15 and y == 7:
-                    return mainMenu.choose_captain(LEVEL + 1)
+                    stat = True
+                    for i in lst_planet:
+                        if not i.get_status():
+                            stat = False
+                    if stat:
+                        return mainMenu.choose_captain(LEVEL + 1)
+                    break
                 flag = True
                 for i in range(len(lst_planet)):
                     if lst_planet[i].x == x and lst_planet[i].y == y:
