@@ -10,9 +10,9 @@ class Group:
         for i in self.lst:
             if i.name == hero:
                 continue
-            bHP += i.bHP()
-            bDMG += i.bDMG()
-            bARMOUR += i.bARMOUR()
+            bHP += i.bHP
+            bDMG += i.bDMG
+            bARMOUR += i.bARMOUR
         return bHP, bDMG, bDMG
 
     def append_hero(self, hero):
@@ -52,15 +52,6 @@ class HeroUnit(DefaultUnit):
         h, d, a = self.group.get_bonus(self.name)
         return self.hp + h, self.dmg + d, self.armour + a
         #  self.hp -= h + int(damage * ((self.armour + a) / (self.armour + a + 10 * damage)))
-
-    def bHP(self):
-        return self.bHP
-
-    def bDMG(self):
-        return self.bDMG
-
-    def bARMOUR(self):
-        return self.bARMOUR
 
     def id(self):
         return self.id
