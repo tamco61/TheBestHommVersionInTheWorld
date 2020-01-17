@@ -144,6 +144,8 @@ class Board:
                                                                     self.top + self.cell_size * (r + 1))], 1)
         screen.blit(self.ship.return_image(),
                     (self.left + self.cell_size * self.ship.x1 + 1, self.top + self.cell_size * self.ship.y1 + 1))
+        screen.blit(pygame.transform.scale(dop_func.load_image('next.jpg', (255, 255, 255)), (self.cell_size, self.cell_size)),
+                    (self.left + self.cell_size * 15 + 1, self.top + self.cell_size * 7 + 1))
 
     def get_cell(self, mouse_pos):
         x, y = mouse_pos
@@ -213,6 +215,8 @@ def run_cycle(captain_name, LEVEL=1):
                 if cell is None:
                     break
                 x, y = cell
+                if x == 15 and y == 7:
+                    return mainMenu.choose_captain(LEVEL + 1)
                 flag = True
                 for i in range(len(lst_planet)):
                     if lst_planet[i].x == x and lst_planet[i].y == y:
