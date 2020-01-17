@@ -86,7 +86,7 @@ class Planet:
     def get_group(self):
         group = defaultUnit.Group('sec')
         for i in range(self.lvl):
-            name, hp, damage, armour, bonus_hp, bonus_damage, bonus_armour, photo = database.full_hero('Дарт Сидиус')
+            name, hp, damage, armour, bonus_hp, bonus_damage, bonus_armour, photo = database.full_hero()
             hero = defaultUnit.HeroUnit(name, hp, damage, armour, group, bonus_hp, bonus_damage, bonus_armour, photo)
             group.append_hero(hero)
         return group
@@ -163,6 +163,22 @@ class Board:
         self.on_click(cell)
 
 
+def congratulations(flag):
+    fon = pygame.transform.scale(dop_func.load_image('battle_fon.jpg'), (WIDTH, HEIGHT))
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                dop_func.terminate()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                return
+        screen.blit(fon, (0, 0))
+        if flag:
+            dop_func.print_text(screen, "Вы победили", WIDTH // 2 - WIDTH // 13, HEIGHT // 2 - HEIGHT // 15)
+        else:
+            dop_func.print_text(screen, "Вы проиграли", WIDTH // 2 - WIDTH // 13, HEIGHT // 2 - HEIGHT // 15)
+        pygame.display.flip()
+
+
 def draw_level(number, board):
     global screen
 
@@ -204,6 +220,9 @@ def run_cycle(captain_name, LEVEL=1):
                             board.get_click(event.pos)
                             if battleUI(lst_planet[i]):
                                 lst_planet[i].set_status(True)
+                                congratulations(True)
+                            else:
+                                congratulations(False)
                         else:
                             flag = False
                             break

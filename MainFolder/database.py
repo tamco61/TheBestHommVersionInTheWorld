@@ -11,7 +11,7 @@ def full_hero(name=0):
                                 (name,)).fetchone()
     else:
         person = CURSOR.execute('SELECT name, hp, dmg, arm, bonus_hp, bonus_damage, bonus_armour, photo FROM hero WHERE (id = ?)',
-                                (random.randint(1, 21),)).fetchone()
+                                (random.randint(1, 29),)).fetchone()
     return person
 
 
@@ -21,7 +21,7 @@ def take_hero(name=0):
                                 (name, )).fetchone()
     else:
         person = CURSOR.execute('SELECT name, hp, dmg, arm, org, photo FROM hero WHERE (id = ?)',
-                                (random.randint(1, 21),)).fetchone()
+                                (random.randint(1, 29),)).fetchone()
     return person
 
 
