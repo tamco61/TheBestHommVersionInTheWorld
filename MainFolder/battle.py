@@ -18,13 +18,13 @@ def battle(tuple):
             hp2, dmg2, armour2 = lst2[index]
             if hp1 <= 0:
                 continue
-            if hp2 <= 0 and random.randint(0, 100) in range(0, 86):
+            if hp2 <= 0 and random.randint(0, 100) in range(0, 90):
                 continue
-            hp2 -= dmg1 - int(dmg1 * (1 - armour2 / (armour2 + 10 * dmg1)))
+            hp2 -= dmg1 - int(dmg1 * (armour2 / (armour2 + 10 * dmg1)))
             lst2[index] = hp2, dmg2, armour2
-            if hp2 <= 0 and random.randint(0, 100) in range(0, 86):
+            if hp2 <= 0 and random.randint(0, 100) in range(0, 90):
                 continue
-            hp1 -= dmg2 - int(dmg2 * (1 - armour1 / (armour1 + 10 * dmg2)))
+            hp1 -= dmg2 - int(dmg2 * (armour1 / (armour1 + 10 * dmg2)))
             lst1[i] = (hp1, dmg1, armour1)
 
         for i in lst2:
