@@ -1,5 +1,7 @@
 import pygame, random
 from MainFolder import dop_func, database, mainField, battle
+from UnitClasses.defaultUnit import groupMain
+from UnitClasses import defaultUnit
 
 pygame.init()
 
@@ -59,6 +61,9 @@ class Button:  # класс для создания кнопок
 
 def set_captain(name, LEVEL=1):  # переход к основному игровому полю
     database.TAKED_HERO.add(name)
+    name, hp, damage, armour, bonus_hp, bonus_damage, bonus_armour, photo = list(database.full_hero(name))
+    Hero = defaultUnit.HeroUnit(name, hp, damage, armour, groupMain, bonus_hp, bonus_damage, bonus_armour, photo)
+    groupMain.append_hero(Hero)
     mainField.run_cycle(name, LEVEL)
     return
 

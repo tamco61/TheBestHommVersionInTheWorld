@@ -4,6 +4,8 @@ from MainFolder import database
 from UnitClasses import defaultUnit
 from MainFolder import battle
 from MainFolder import mainMenu
+from UnitClasses.defaultUnit import groupMain
+
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -11,18 +13,16 @@ all_sprites = pygame.sprite.Group()
 screen = pygame.display.set_mode(flags=pygame.FULLSCREEN)
 WIDTH, HEIGHT = screen.get_width(), screen.get_height()
 FPS = 20
-groupMain = defaultUnit.Group('Main')
 
 
 # Интерфейс перед боем
 def battleUI(planet=None, flag=False, res=None):
-    global screen, groupMain
+    global screen
     if flag:
         return res
     fon = pygame.transform.scale(dop_func.load_image('fone.jpg'), (WIDTH, HEIGHT))
     not_ours_lst = planet.get_group().get_lst()
     start_but = mainMenu.Button(310, 75, font_type='stat.ttf')
-
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -63,7 +63,7 @@ def battleUI(planet=None, flag=False, res=None):
             hp += int(not_ours_lst[i].hp)
             damage += int(not_ours_lst[i].dmg)
             armour += int(not_ours_lst[i].armour)
-            dop_func.print_text(screen, f'HP {hp} DMG {damage} ARM {armour}', WIDTH // 2, HEIGHT // 2 + HEIGHT // 6,
+        dop_func.print_text(screen, f'HP {hp} DMG {damage} ARM {armour}', WIDTH // 2, HEIGHT // 2 + HEIGHT // 6,
                                 font_type='stat.ttf',
                                 font_size=35)
         start_but.draw(WIDTH // 2 - start_but.width // 2, HEIGHT // 2 + HEIGHT // 3, "Начать игру", 'battle',
@@ -146,6 +146,7 @@ class Board:
                     (self.left + self.cell_size * self.ship.x1 + 1, self.top + self.cell_size * self.ship.y1 + 1))
         screen.blit(pygame.transform.scale(dop_func.load_image('next.jpg', (255, 255, 255)), (self.cell_size, self.cell_size)),
                     (self.left + self.cell_size * 15 + 1, self.top + self.cell_size * 7 + 1))
+        return
 
     def get_cell(self, mouse_pos):
         x, y = mouse_pos

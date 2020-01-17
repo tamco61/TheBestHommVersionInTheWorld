@@ -55,3 +55,6 @@ class HeroUnit(DefaultUnit):
 
     def id(self):
         return self.id
+
+
+groupMain = Group('Main')
