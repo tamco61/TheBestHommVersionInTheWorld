@@ -1,9 +1,9 @@
-class Group:
+class Group:  # класс для групп с персонажами
     def __init__(self, name):
         self.name = name
         self.lst = list()
 
-    def get_bonus(self, hero):
+    def get_bonus(self, hero):    # возвращает бонусы героя
         bHP = 0
         bDMG = 0
         bARMOUR = 0
@@ -15,14 +15,14 @@ class Group:
             bARMOUR += i.bARMOUR
         return bHP, bDMG, bDMG
 
-    def append_hero(self, hero):
+    def append_hero(self, hero):  # добавление персонажа в группу
         if len(self.lst) < 5:
             self.lst.append(hero)
 
-    def remove_hero(self, index):
+    def remove_hero(self, index):  # удаляет героя из группы
         self.lst.remove(index)
 
-    def get_lst(self):
+    def get_lst(self):  # возвращает список с персонажами
         return self.lst
 
 
@@ -48,7 +48,7 @@ class HeroUnit(DefaultUnit):
         self.bARMOUR = bonus_armour
         self.photo = photo
 
-    def get_hpDmgArmour(self):
+    def get_hpDmgArmour(self):  # возвращает хп, урон, броню героя
         h, d, a = self.group.get_bonus(self.name)
         return self.hp + h, self.dmg + d, self.armour + a
         #  self.hp -= h + int(damage * ((self.armour + a) / (self.armour + a + 10 * damage)))

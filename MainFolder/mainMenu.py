@@ -23,7 +23,7 @@ class Button:  # класс для создания кнопок
         self.font_type = font_type
         self.action = None
 
-    def draw(self, x, y, text, action=None, param_action=None):
+    def draw(self, x, y, text, action=None, param_action=None):  # рисует кнопку
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
         naved = pygame.mixer.Sound('data/naved.wav')
@@ -55,7 +55,7 @@ class Button:  # класс для создания кнопок
 
         dop_func.print_text(screen, text, x + 10, y + 15, font_size=self.text_size, font_type=self.font_type)
 
-    def ret(self):
+    def ret(self):  # возвращает результат действия
         return self.action
 
 
@@ -98,7 +98,7 @@ def menu():  # стартовое меню
                                          (screen.get_width(), screen.get_height()))
             counter_sec = 0
         screen.blit(fon, (0, 0))
-        if dop_func.check_save():
+        if dop_func.check_save():  # если есть сейвы то одна кнопка, если нет, то другая
             pass
         else:
             start_game.draw(screen.get_width() // 2 - start_game.width // 2,

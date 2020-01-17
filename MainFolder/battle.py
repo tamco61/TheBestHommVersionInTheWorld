@@ -1,7 +1,7 @@
 import random
 
 
-def battle(tuple):
+def battle(tuple):  # производит рассчет боя
     lst1, lst2 = tuple[0].get_lst(), tuple[1].get_lst()
     lst = list()
     for i in lst1:

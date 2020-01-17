@@ -71,7 +71,7 @@ def battleUI(planet=None, flag=False, res=None):
         pygame.display.flip()
 
 
-class Planet:
+class Planet:  # класс для создания планет
     def __init__(self, id, x, y, lvl):
         self.id = id
         self.lvl = lvl
@@ -80,10 +80,10 @@ class Planet:
         self.status = False
         self.group = self.get_group()
 
-    def set_status(self, status):
+    def set_status(self, status):  # устанавливает, захвачена планета или нет
         self.status = status
 
-    def get_group(self):
+    def get_group(self):  # возвращает группу с планеты
         group = defaultUnit.Group('sec')
         for i in range(self.lvl):
             name, hp, damage, armour, bonus_hp, bonus_damage, bonus_armour, photo = database.full_hero()
@@ -91,11 +91,11 @@ class Planet:
             group.append_hero(hero)
         return group
 
-    def get_status(self):
+    def get_status(self):  # возвращет статус планеты
         return self.status
 
 
-class SpaceShip:
+class SpaceShip:  # класс корабля
     def __init__(self, size):
         self.size = size
         self.x0, self.y0 = 0, 0
@@ -106,11 +106,11 @@ class SpaceShip:
     def return_image(self):
         return self.image
 
-    def move(self, cell):
+    def move(self, cell):  # изменяет координаты коробля
         self.x1, self.y1 = cell
 
 
-class Board:
+class Board:  # класс для создания игрового поля
     # создание поля
     def __init__(self, width, height):
         self.width = width
@@ -129,7 +129,7 @@ class Board:
         self.cell_size = cell_size
         self.ship = SpaceShip(self.cell_size - 2)
 
-    def render(self):
+    def render(self):  # отображает игровое поле
         global screen
 
         for i in range(self.width):
@@ -148,7 +148,7 @@ class Board:
                     (self.left + self.cell_size * 15 + 1, self.top + self.cell_size * 7 + 1))
         return
 
-    def get_cell(self, mouse_pos):
+    def get_cell(self, mouse_pos):  # возвращает клетку
         x, y = mouse_pos
         x -= self.left
         y -= self.top
@@ -158,15 +158,15 @@ class Board:
             return x0, y0
         return None
 
-    def on_click(self, cell):
+    def on_click(self, cell):  # передвигает корабль
         self.ship.move(cell)
 
-    def get_click(self, mouse_pos):
+    def get_click(self, mouse_pos):  # производит действие по клику
         cell = self.get_cell(mouse_pos)
         self.on_click(cell)
 
 
-def congratulations(flag):
+def congratulations(flag):  # выводит результат битвы
     fon = pygame.transform.scale(dop_func.load_image('battle_fon.jpg'), (WIDTH, HEIGHT))
     while True:
         for event in pygame.event.get():
@@ -182,7 +182,7 @@ def congratulations(flag):
         pygame.display.flip()
 
 
-def draw_level(number, board):
+def draw_level(number, board):  # рисует уровень
     global screen
 
     lst_planet = database.take_planet(number)
@@ -195,8 +195,7 @@ def draw_level(number, board):
     return lst_planet
 
 
-def run_cycle(captain_name, LEVEL=1):
-    global groupMain
+def run_cycle(captain_name, LEVEL=1):  # основной цикл
     if groupMain.lst == list():
         name, hp, damage, armour, bonus_hp, bonus_damage, bonus_armour, photo = list(database.full_hero(captain_name))
         Hero = defaultUnit.HeroUnit(name, hp, damage, armour, groupMain, bonus_hp, bonus_damage, bonus_armour, photo)
@@ -241,7 +240,6 @@ def run_cycle(captain_name, LEVEL=1):
                 if flag:
                     board.get_click(event.pos)
 
-        screen.fill((0, 0, 0))
         screen.blit(fon, (0, 0))
         draw_level(LEVEL, board)
         board.render()
