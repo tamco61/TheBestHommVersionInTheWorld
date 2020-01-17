@@ -86,7 +86,6 @@ class Planet:  # класс для создания планет
     def get_group(self):  # возвращает группу с планеты
         group = defaultUnit.Group('sec')
         for i in range(self.lvl):
-
             while True:
                 person = database.full_hero()
                 if person[0] not in database.TAKED_HERO:
@@ -250,5 +249,4 @@ def run_cycle(captain_name, LEVEL=1):  # основной цикл
         board.render()
         if flag is False:
             dop_func.print_text(screen, 'Планета уже захвачена', WIDTH // 2 - WIDTH // 5, HEIGHT // 2 - HEIGHT // 20)
-        print(database.TAKED_HERO)
         pygame.display.flip()
