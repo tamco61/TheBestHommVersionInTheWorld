@@ -93,6 +93,7 @@ class Planet:  # класс для создания планет
             name, hp, damage, armour, bonus_hp, bonus_damage, bonus_armour, photo = person
             hero = defaultUnit.HeroUnit(name, hp, damage, armour, group, bonus_hp, bonus_damage, bonus_armour, photo)
             group.append_hero(hero)
+        self.group = group
         return group
 
     def get_status(self):  # возвращет статус планеты
