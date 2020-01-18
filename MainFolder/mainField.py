@@ -221,12 +221,13 @@ def run_cycle(captain_name, LEVEL=1):  # основной цикл
                 x, y = cell
 
                 if x == 15 and y == 7:
-                    stat = True
-                    for i in lst_planet:
-                        if not i.get_status():
-                            stat = False
-                    if stat:
-                        return mainMenu.choose_captain(LEVEL + 1)
+                    if LEVEL < 2:
+                        stat = True
+                        for i in lst_planet:
+                            if not i.get_status():
+                                stat = False
+                        if stat:
+                            return mainMenu.choose_captain(LEVEL + 1)
                     break
                 flag = True
                 for i in range(len(lst_planet)):
