@@ -186,6 +186,33 @@ def congratulations(flag):  # выводит результат битвы
         pygame.display.flip()
 
 
+def pause(ret=False):
+    cont = mainMenu.Button(315, 70, text_size=40)
+    save_game = mainMenu.Button(280, 70, text_size=40)
+    change_team = mainMenu.Button(225, 70, text_size=40)
+    exit_game = mainMenu.Button(220, 70, text_size=40)
+    fon = pygame.transform.scale(dop_func.load_image('pause.jpg'), (WIDTH, HEIGHT))
+    if ret:
+        return True
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                dop_func.terminate()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                if x in range(WIDTH // 2 - cont.width // 2, WIDTH // 2 + cont.width // 2):
+                    if y in range(int(HEIGHT // 2.5), int(HEIGHT // 2.5) + cont.height):
+                        cont.draw(WIDTH // 2 - cont.width // 2, HEIGHT // 2 + HEIGHT // 3, "Начать игру", 'return')
+                        return cont.ret()
+        screen.blit(fon, (0, 0))
+        cont.draw(WIDTH // 2 - cont.width // 2, HEIGHT // 2.5, 'Продолжить', 'return')
+        save_game.draw(WIDTH // 2 - save_game.width // 2, HEIGHT // 2.5 + cont.height + 10, 'Сохранить')
+        change_team.draw(WIDTH // 2 - change_team.width // 2, HEIGHT // 2.5 + 2 * cont.height + 2 * 10, 'Команда')
+        exit_game.draw(WIDTH // 2 - exit_game.width // 2, HEIGHT // 2.5 + 3 * cont.height + 3 * 10, ' Выйти',
+                       action=quit)
+        pygame.display.flip()
+
+
 def draw_level(number, board):  # рисует уровень
     global screen
 
@@ -244,7 +271,8 @@ def run_cycle(captain_name, LEVEL=1):  # основной цикл
                             break
                 if flag:
                     board.get_click(event.pos)
-
+            if event.type == pygame.KEYDOWN and event.key == 27:
+                pause()
         screen.blit(fon, (0, 0))
         draw_level(LEVEL, board)
         board.render()

@@ -44,6 +44,9 @@ class Button:  # класс для создания кнопок
                                 mainField.battleUI(flag=True, res=False)
                         elif action == 'set_captain':
                             set_captain(param_action[0], param_action[1])
+                        elif action == 'return':
+                            self.action = True
+                            mainField.pause(True)
                         else:
                             if param_action:
                                 action(param_action)
