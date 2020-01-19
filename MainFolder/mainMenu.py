@@ -47,6 +47,10 @@ class Button:  # класс для создания кнопок
                         elif action == 'return':
                             self.action = True
                             mainField.pause(True)
+                        elif action == dop_func.save_game:
+                            dop_func.save_game(param_action)
+                            self.action = True
+                            mainField.pause(True)
                         else:
                             if param_action:
                                 action(param_action)

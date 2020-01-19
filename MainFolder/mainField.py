@@ -13,6 +13,7 @@ all_sprites = pygame.sprite.Group()
 screen = pygame.display.set_mode(flags=pygame.FULLSCREEN)
 WIDTH, HEIGHT = screen.get_width(), screen.get_height()
 FPS = 20
+lst_planet = 0
 
 
 # Интерфейс перед боем
@@ -187,7 +188,8 @@ def congratulations(flag):  # выводит результат битвы
         pygame.display.flip()
 
 
-def pause(ret=False):
+def pause(ret=False):  # создает паузу при нажати esc
+    global lst_planet
     cont = mainMenu.Button(315, 70, text_size=40)
     save_game = mainMenu.Button(280, 70, text_size=40)
     change_team = mainMenu.Button(225, 70, text_size=40)
@@ -205,12 +207,17 @@ def pause(ret=False):
                     if y in range(int(HEIGHT // 2.5), int(HEIGHT // 2.5) + cont.height):
                         cont.draw(WIDTH // 2 - cont.width // 2, HEIGHT // 2 + HEIGHT // 3, "Начать игру", 'return')
                         return cont.ret()
+                    elif y in range(int(HEIGHT // 2.5 + cont.height + 10), int(HEIGHT // 2.5 + 2 * cont.height + 10)):
+                        save_game.draw(WIDTH // 2 - save_game.width // 2, HEIGHT // 2.5 + cont.height + 10, 'Сохранить',
+                                       dop_func.save_game, lst_planet)
+                        return save_game.ret()
+
         screen.blit(fon, (0, 0))
         cont.draw(WIDTH // 2 - cont.width // 2, HEIGHT // 2.5, 'Продолжить', 'return')
-        save_game.draw(WIDTH // 2 - save_game.width // 2, HEIGHT // 2.5 + cont.height + 10, 'Сохранить')
+        save_game.draw(WIDTH // 2 - save_game.width // 2, HEIGHT // 2.5 + cont.height + 10, 'Сохранить', dop_func.save_game, lst_planet)
         change_team.draw(WIDTH // 2 - change_team.width // 2, HEIGHT // 2.5 + 2 * cont.height + 2 * 10, 'Команда')
         exit_game.draw(WIDTH // 2 - exit_game.width // 2, HEIGHT // 2.5 + 3 * cont.height + 3 * 10, ' Выйти',
-                       action=quit)
+                       action=mainMenu.menu)
         pygame.display.flip()
 
 
@@ -233,6 +240,7 @@ def run_cycle(captain_name, LEVEL=1):  # основной цикл
         Hero = defaultUnit.HeroUnit(name, hp, damage, armour, groupMain, bonus_hp, bonus_damage, bonus_armour, photo)
         groupMain.append_hero(Hero)
     board = Board(16, 8)
+    global lst_planet
     lst_planet = [Planet(i[0], i[1], i[2], LEVEL) for i in database.take_planet(LEVEL)]
     cell_s = WIDTH // 16 - 1
     board.set_view((WIDTH - cell_s * 16) // 2, (HEIGHT - cell_s * 8) // 2, WIDTH // 16 - 1)

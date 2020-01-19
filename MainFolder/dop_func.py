@@ -1,4 +1,5 @@
-import pygame, sys
+import pygame, sys, json
+from MainFolder import database
 
 
 def terminate():  # при вызове функции игра завершается
@@ -26,3 +27,9 @@ def print_text(screen, text, x, y, font_size=50, font_type='cosm.ttf', color='wh
     font_type = pygame.font.Font(f"data/{font_type}", font_size)
     mes = font_type.render(text, 1, pygame.Color(color))
     screen.blit(mes, (x, y))
+
+
+def save_game(planets):
+    with open('save/save1.json', 'w') as save_file:
+        data = {'heroes': list(database.TAKED_HERO)}
+        json.dump(data, save_file)
