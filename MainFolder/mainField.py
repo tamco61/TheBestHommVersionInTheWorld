@@ -189,7 +189,7 @@ def congratulations(flag):  # выводит результат битвы
 
 
 def pause(ret=False):  # создает паузу при нажати esc
-    global lst_planet
+    global lst_planet, lvl
     cont = mainMenu.Button(315, 70, text_size=40)
     save_game = mainMenu.Button(280, 70, text_size=40)
     change_team = mainMenu.Button(225, 70, text_size=40)
@@ -209,12 +209,12 @@ def pause(ret=False):  # создает паузу при нажати esc
                         return cont.ret()
                     elif y in range(int(HEIGHT // 2.5 + cont.height + 10), int(HEIGHT // 2.5 + 2 * cont.height + 10)):
                         save_game.draw(WIDTH // 2 - save_game.width // 2, HEIGHT // 2.5 + cont.height + 10, 'Сохранить',
-                                       dop_func.save_game, lst_planet)
+                                       dop_func.save_game, (lst_planet, lvl))
                         return save_game.ret()
 
         screen.blit(fon, (0, 0))
         cont.draw(WIDTH // 2 - cont.width // 2, HEIGHT // 2.5, 'Продолжить', 'return')
-        save_game.draw(WIDTH // 2 - save_game.width // 2, HEIGHT // 2.5 + cont.height + 10, 'Сохранить', dop_func.save_game, lst_planet)
+        save_game.draw(WIDTH // 2 - save_game.width // 2, HEIGHT // 2.5 + cont.height + 10, 'Сохранить', dop_func.save_game, (lst_planet, lvl))
         change_team.draw(WIDTH // 2 - change_team.width // 2, HEIGHT // 2.5 + 2 * cont.height + 2 * 10, 'Команда')
         exit_game.draw(WIDTH // 2 - exit_game.width // 2, HEIGHT // 2.5 + 3 * cont.height + 3 * 10, ' Выйти',
                        action=mainMenu.menu)
@@ -240,8 +240,9 @@ def run_cycle(captain_name, LEVEL=1):  # основной цикл
         Hero = defaultUnit.HeroUnit(name, hp, damage, armour, groupMain, bonus_hp, bonus_damage, bonus_armour, photo)
         groupMain.append_hero(Hero)
     board = Board(16, 8)
-    global lst_planet
+    global lst_planet, lvl
     lst_planet = [Planet(i[0], i[1], i[2], LEVEL) for i in database.take_planet(LEVEL)]
+    lvl = LEVEL
     cell_s = WIDTH // 16 - 1
     board.set_view((WIDTH - cell_s * 16) // 2, (HEIGHT - cell_s * 8) // 2, WIDTH // 16 - 1)
     fon = pygame.transform.scale(dop_func.load_image('Space.jpg'), (WIDTH, HEIGHT))

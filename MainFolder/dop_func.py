@@ -29,7 +29,12 @@ def print_text(screen, text, x, y, font_size=50, font_type='cosm.ttf', color='wh
     screen.blit(mes, (x, y))
 
 
-def save_game(planets):
+def save_game(planets):  # сохраняет игру
     with open('save/save1.json', 'w') as save_file:
-        data = {'heroes': list(database.TAKED_HERO)}
+        data = {'heroes': list(database.TAKED_HERO), 'planets': {}}
+        for i in planets[0]:
+            if i is planets[0][0]:
+                data['planets'][str(planets[1])] = [{i.id: i.status}]
+            else:
+                data['planets'][str(planets[1])] += [{i.id: i.status}]
         json.dump(data, save_file)
