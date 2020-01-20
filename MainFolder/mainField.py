@@ -188,6 +188,24 @@ def congratulations(flag):  # выводит результат битвы
         pygame.display.flip()
 
 
+def resume():
+    loaded = dop_func.load_game()
+    level = int(list(loaded['planets'].keys())[0])
+    database.TAKED_HERO.clear()
+    groupMain.lst.clear()
+    for i in loaded['heroes']:
+        database.TAKED_HERO.add(i)
+        name, hp, damage, armour, bonus_hp, bonus_damage, bonus_armour, photo = list(database.full_hero(i))
+        hero = defaultUnit.HeroUnit(name, hp, damage, armour, groupMain, bonus_hp, bonus_damage, bonus_armour, photo)
+        groupMain.append_hero(hero)
+    planets = [Planet(i[0], i[1], i[2], level) for i in database.take_planet(level)]
+    for i in planets:
+        for j in loaded['planets'][str(level)]:
+            if int(list(j.keys())[0]) == i.id:
+                i.set_status(list(j.values())[0])
+    run_cycle(groupMain.lst[0], level, planets)
+
+
 def pause(ret=False):  # создает паузу при нажати esc
     global lst_planet, lvl
     cont = mainMenu.Button(315, 70, text_size=40)
@@ -234,14 +252,20 @@ def draw_level(number, board):  # рисует уровень
     return lst_planet
 
 
-def run_cycle(captain_name, LEVEL=1):  # основной цикл
+def run_cycle(captain_name, LEVEL=1, planets=None):  # основной цикл
+    if len(groupMain.lst) != LEVEL:
+        groupMain.lst.clear()
     if groupMain.lst == list():
         name, hp, damage, armour, bonus_hp, bonus_damage, bonus_armour, photo = list(database.full_hero(captain_name))
         Hero = defaultUnit.HeroUnit(name, hp, damage, armour, groupMain, bonus_hp, bonus_damage, bonus_armour, photo)
         groupMain.append_hero(Hero)
+
     board = Board(16, 8)
     global lst_planet, lvl
-    lst_planet = [Planet(i[0], i[1], i[2], LEVEL) for i in database.take_planet(LEVEL)]
+    if planets:
+        lst_planet = planets
+    else:
+        lst_planet = [Planet(i[0], i[1], i[2], LEVEL) for i in database.take_planet(LEVEL)]
     lvl = LEVEL
     cell_s = WIDTH // 16 - 1
     board.set_view((WIDTH - cell_s * 16) // 2, (HEIGHT - cell_s * 8) // 2, WIDTH // 16 - 1)

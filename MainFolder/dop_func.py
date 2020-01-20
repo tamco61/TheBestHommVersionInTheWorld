@@ -20,7 +20,10 @@ def load_image(name, colorkey=None):  # функция для загрузки �
 
 
 def check_save():  # проверяет есть ли сохраненные игры
-    pass
+    with open('save/save1.json', 'r') as save_file:
+        if len(save_file.read()) > 2:
+            return True
+        return False
 
 
 def print_text(screen, text, x, y, font_size=50, font_type='cosm.ttf', color='white'):  # функция для вывода текста
@@ -38,3 +41,8 @@ def save_game(planets):  # сохраняет игру
             else:
                 data['planets'][str(planets[1])] += [{i.id: i.status}]
         json.dump(data, save_file)
+
+
+def load_game():  # загрузка сохраненной игры
+    with open('save/save1.json', 'r') as save_file:
+        return json.load(save_file)

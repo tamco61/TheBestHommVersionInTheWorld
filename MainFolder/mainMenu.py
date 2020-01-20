@@ -1,4 +1,4 @@
-import pygame, random
+import pygame, random, os
 from MainFolder import dop_func, database, mainField, battle
 from UnitClasses.defaultUnit import groupMain
 from UnitClasses import defaultUnit
@@ -93,6 +93,7 @@ def menu():  # стартовое меню
                                  (screen.get_width(), screen.get_height()))
     start_game = Button(350, 80)
     quit_button = Button(225, 80)
+    resume_game = Button(350, 80, text_size=45)
     counter_sec = 0
     pygame.mixer.music.play(-1)
     while True:
@@ -106,14 +107,26 @@ def menu():  # стартовое меню
             counter_sec = 0
         screen.blit(fon, (0, 0))
         if dop_func.check_save():  # если есть сейвы то одна кнопка, если нет, то другая
-            pass
+            start_game.draw(screen.get_width() // 2 - start_game.width // 2,
+                            screen.get_height() // 4 * 2.5 - 300, 'Новая игра', start)
+            resume_game.draw(screen.get_width() // 2 - start_game.width // 2,
+                             screen.get_height() // 4 * 2.5 - 200, 'Продолжить', mainField.resume)
         else:
             start_game.draw(screen.get_width() // 2 - start_game.width // 2,
-                            screen.get_height() // 4 * 2.5 - 200, 'Новая игра', choose_captain)
+                            screen.get_height() // 4 * 2.5 - 200, 'Новая игра', start)
         quit_button.draw(screen.get_width() // 2 - quit_button.width // 2, screen.get_height() // 4 * 2.5 - 100,
                          'Выйти', quit)
         pygame.display.flip()
         clock.tick(FPS)
+
+
+def start():
+    f = open('save/save1.json', 'w')
+    f.write('{}')
+    f.close()
+    database.TAKED_HERO.clear()
+    groupMain.lst.clear()
+    choose_captain()
 
 
 def choose_captain(LEVEL=1):  # выбор капитана, очень много костылей, лучше не смотреть код
@@ -172,4 +185,4 @@ def choose_captain(LEVEL=1):  # выбор капитана, очень мног
 
 
 if __name__ == '__main__':
-    choose_captain()
+    menu()
