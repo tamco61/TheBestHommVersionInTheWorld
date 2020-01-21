@@ -23,20 +23,11 @@ def battleUI(planet=None, flag=False, res=None):
         return res
     battle = Battle((groupMain, planet.get_group()))
     fon = pygame.transform.scale(dop_func.load_image('fone.jpg'), (WIDTH, HEIGHT))
-    not_ours_lst = battle.lst1
-    start_but = mainMenu.Button(310, 75, font_type='stat.ttf')
+    start_but = mainMenu.Button(105, 75, font_type='stat.ttf')
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 dop_func.terminate()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = event.pos
-                if x in range(WIDTH // 2 - start_but.width // 2, WIDTH // 2 + start_but.width // 2):
-                    if y in range(HEIGHT // 2 + HEIGHT // 3, HEIGHT // 2 + HEIGHT // 3 + 75):
-                        #start_but.draw(WIDTH // 2 - start_but.width // 2, HEIGHT // 2 + HEIGHT // 3, "Начать игру",
-                         #              'battle',
-                         #              battle)
-                        pass
         screen.blit(fon, (0, 0))
         not_ours_lst = battle.lst2
         our_lst = battle.lst1
@@ -388,5 +379,3 @@ def run_cycle(captain_name, LEVEL=1, planets=None):  # основной цикл
         pygame.display.flip()
 
 
-if __name__ == '__main__':
-    change()

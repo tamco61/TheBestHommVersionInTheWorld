@@ -191,6 +191,3 @@ def choose_captain(LEVEL=1):  # выбор капитана, очень мног
         pygame.display.flip()
         clock.tick(FPS)
 
-
-if __name__ == '__main__':
-    choose_captain()
