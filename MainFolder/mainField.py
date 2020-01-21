@@ -2,7 +2,7 @@ import pygame
 from MainFolder import dop_func
 from MainFolder import database
 from UnitClasses import defaultUnit
-from MainFolder import battle
+from MainFolder.battle import Battle
 from MainFolder import mainMenu
 from UnitClasses.defaultUnit import groupMain
 
@@ -21,8 +21,9 @@ def battleUI(planet=None, flag=False, res=None):
     global screen
     if flag:
         return res
+    battle = Battle((groupMain, planet.get_group()))
     fon = pygame.transform.scale(dop_func.load_image('fone.jpg'), (WIDTH, HEIGHT))
-    not_ours_lst = planet.get_group().get_lst()
+    not_ours_lst = battle.lst1
     start_but = mainMenu.Button(310, 75, font_type='stat.ttf')
     while True:
         for event in pygame.event.get():
@@ -32,44 +33,52 @@ def battleUI(planet=None, flag=False, res=None):
                 x, y = event.pos
                 if x in range(WIDTH // 2 - start_but.width // 2, WIDTH // 2 + start_but.width // 2):
                     if y in range(HEIGHT // 2 + HEIGHT // 3, HEIGHT // 2 + HEIGHT // 3 + 75):
-                        start_but.draw(WIDTH // 2 - start_but.width // 2, HEIGHT // 2 + HEIGHT // 3, "Начать игру",
-                                       'battle',
-                                       (groupMain, planet.group))
-                        return start_but.ret()
+                        #start_but.draw(WIDTH // 2 - start_but.width // 2, HEIGHT // 2 + HEIGHT // 3, "Начать игру",
+                         #              'battle',
+                         #              battle)
+                        pass
         screen.blit(fon, (0, 0))
-        our_lst = groupMain.get_lst()
+        not_ours_lst = battle.lst2
+        our_lst = battle.lst1
         hp, damage, armour = 0, 0, 0
         for i in range(len(our_lst)):
+            hpp, dmgg, armrr = our_lst[i][0], our_lst[i][1], our_lst[i][2]
+            if hpp < 0:
+                hpp = 0
             dop_func.print_text(screen, 'Ваши герои', WIDTH // 15, HEIGHT // 20, font_type='stat.ttf', font_size=60)
-            dop_func.print_text(screen, f'{our_lst[i].name} HP {our_lst[i].hp} DMG {our_lst[i].dmg} ARM '
-                                        f'{our_lst[i].armour}', WIDTH // 15, i * HEIGHT // 10 + HEIGHT // 5,
+            dop_func.print_text(screen, f'{battle.gr1.get_lst()[i].name} HP {hpp} DMG {dmgg} ARM '
+                                        f'{armrr}', WIDTH // 15, i * HEIGHT // 10 + HEIGHT // 5,
                                 font_type='stat.ttf', font_size=35)
             dop_func.print_text(screen, 'Общие статы', WIDTH // 15, HEIGHT // 2 + HEIGHT // 8, font_type='stat.ttf',
                                 font_size=45)
-            hp += int(our_lst[i].hp)
-            damage += int(our_lst[i].dmg)
-            armour += int(our_lst[i].armour)
+            hp += int(hpp)
+            damage += int(dmgg)
+            armour += int(armrr)
         dop_func.print_text(screen, f'HP {hp} DMG {damage} ARM {armour}', WIDTH // 15, HEIGHT // 2 + HEIGHT // 6,
                             font_type='stat.ttf',
                             font_size=35)
         hp, damage, armour = 0, 0, 0
         for i in range(len(not_ours_lst)):
+            hpp, dmgg, armrr = not_ours_lst[i][0], not_ours_lst[i][1], not_ours_lst[i][2]
+            if hpp < 0:
+                hpp = 0
             dop_func.print_text(screen, 'Герои противника', WIDTH // 2, HEIGHT // 20, font_type='stat.ttf', font_size=60)
             dop_func.print_text(screen,
-                                f'{not_ours_lst[i].name} HP {not_ours_lst[i].hp} DMG {not_ours_lst[i].dmg} ARM '
-                                f'{not_ours_lst[i].armour}',
+                                f'{battle.gr2.get_lst()[i].name} HP {hpp} DMG {dmgg} ARM '
+                                f'{armrr}',
                                 WIDTH // 2, i * HEIGHT // 10 + HEIGHT // 5, font_type='stat.ttf', font_size=35)
             dop_func.print_text(screen, 'Общие статы', WIDTH // 2, HEIGHT // 2 + HEIGHT // 8, font_type='stat.ttf',
                                 font_size=45)
-            hp += int(not_ours_lst[i].hp)
-            damage += int(not_ours_lst[i].dmg)
-            armour += int(not_ours_lst[i].armour)
+            hp += int(hpp)
+            damage += int(dmgg)
+            armour += int(armrr)
         dop_func.print_text(screen, f'HP {hp} DMG {damage} ARM {armour}', WIDTH // 2, HEIGHT // 2 + HEIGHT // 6,
                                 font_type='stat.ttf',
                                 font_size=35)
-        start_but.draw(WIDTH // 2 - start_but.width // 2, HEIGHT // 2 + HEIGHT // 3, "Начать игру", 'battle',
-                       (groupMain, planet.group))
+        start_but.draw(WIDTH // 2 - start_but.width // 2, HEIGHT // 2 + HEIGHT // 3, "Ход", 'battle', battle)
         pygame.display.flip()
+        if battle.get_result() is not None:
+            return battle.get_result()
 
 
 class Planet:  # класс для создания планет

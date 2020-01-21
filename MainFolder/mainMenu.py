@@ -2,6 +2,7 @@ import pygame, random, os
 from MainFolder import dop_func, database, mainField, battle
 from UnitClasses.defaultUnit import groupMain
 from UnitClasses import defaultUnit
+from MainFolder.battle import Battle
 
 pygame.init()
 
@@ -24,6 +25,7 @@ class Button:  # класс для создания кнопок
         self.text_size = text_size
         self.font_type = font_type
         self.action = None
+        self.t = False
 
     def draw(self, x, y, text, action=None, param_action=None, color='white'):  # рисует кнопку
         mouse = pygame.mouse.get_pos()
@@ -40,11 +42,7 @@ class Button:  # класс для создания кнопок
                             pygame.quit()
                             quit()
                         elif action == 'battle':
-                            self.action = battle.battle(param_action)
-                            if battle.battle(param_action):
-                                mainField.battleUI(flag=True, res=True)
-                            else:
-                                mainField.battleUI(flag=True, res=False)
+                            param_action.next()
                         elif action == 'set_captain':
                             set_captain(param_action[0], param_action[1])
                         elif action == 'return':
