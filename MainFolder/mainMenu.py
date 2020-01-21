@@ -11,10 +11,12 @@ FPS = 10
 clock = pygame.time.Clock()
 WIDTH, HEIGHT = screen.get_width(), screen.get_height()
 pygame.mixer.music.load('data/mus1.mp3')
+flag_click = [False, None]
 
 
 class Button:  # класс для создания кнопок
     def __init__(self, width, height, inactive_color=(150, 150, 150), active_color=(0, 0, 0), text_size=50, font_type='cosm.ttf'):
+
         self.width = width
         self.height = height
         self.inactive_color = inactive_color
@@ -23,12 +25,13 @@ class Button:  # класс для создания кнопок
         self.font_type = font_type
         self.action = None
 
-    def draw(self, x, y, text, action=None, param_action=None):  # рисует кнопку
+    def draw(self, x, y, text, action=None, param_action=None, color='white'):  # рисует кнопку
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
         naved = pygame.mixer.Sound('data/naved.wav')
         if x < mouse[0] < x + self.width and y < mouse[1] < y + self.height:
                 pygame.draw.rect(screen, self.active_color, (x, y, self.width, self.height))
+                global flag_click
                 if click[0] == 1:
                     pygame.mixer.Sound.play(naved)
                     pygame.time.delay(300)
@@ -51,6 +54,14 @@ class Button:  # класс для создания кнопок
                             dop_func.save_game(param_action)
                             self.action = True
                             mainField.pause(True)
+                        elif action == 'change_hero':
+                            flag_click = [True, param_action]
+                        elif action == 'change':
+                            if flag_click[0]:
+                                mainField.change_hero(flag_click[1], param_action)
+                                flag_click = [False, None]
+                        elif action == 'quit':
+                            self.action = True
                         else:
                             if param_action:
                                 action(param_action)
@@ -59,15 +70,14 @@ class Button:  # класс для создания кнопок
                             return
         else:
             pygame.draw.rect(screen, self.inactive_color, (x, y, self.width, self.height))
-
-        dop_func.print_text(screen, text, x + 10, y + 15, font_size=self.text_size, font_type=self.font_type)
+        dop_func.print_text(screen, text, x + 10, y + 15, font_size=self.text_size, font_type=self.font_type, color=color)
 
     def ret(self):  # возвращает результат действия
         return self.action
 
 
 def set_captain(name, LEVEL=1):  # переход к основному игровому полю
-    database.TAKED_HERO.add(name)
+    database.TAKED_HERO.append(name)
     name, hp, damage, armour, bonus_hp, bonus_damage, bonus_armour, photo = list(database.full_hero(name))
     Hero = defaultUnit.HeroUnit(name, hp, damage, armour, groupMain, bonus_hp, bonus_damage, bonus_armour, photo)
     groupMain.append_hero(Hero)
@@ -185,4 +195,4 @@ def choose_captain(LEVEL=1):  # выбор капитана, очень мног
 
 
 if __name__ == '__main__':
-    menu()
+    choose_captain()

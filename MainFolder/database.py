@@ -2,7 +2,7 @@ import sqlite3, random
 
 CONNECTION = sqlite3.connect('data/starWars.db')
 CURSOR = CONNECTION.cursor()
-TAKED_HERO = set()  # список с использоваными героями
+TAKED_HERO = []  # список с использоваными героями
 
 
 def full_hero(name=0):  # эта и следующая функция берут информацию про героя из бд
