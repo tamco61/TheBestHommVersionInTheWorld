@@ -348,7 +348,7 @@ def run_cycle(captain_name, LEVEL=1, planets=None):  # основной цикл
                 x, y = cell
 
                 if x == 15 and y == 7:
-                    if LEVEL < 9:
+                    if LEVEL < 8:
                         stat = True
                         for i in lst_planet:
                             if not i.get_status():
