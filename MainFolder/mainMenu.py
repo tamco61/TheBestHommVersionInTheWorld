@@ -12,7 +12,7 @@ FPS = 10
 clock = pygame.time.Clock()
 WIDTH, HEIGHT = screen.get_width(), screen.get_height()
 pygame.mixer.music.load('data/mus1.mp3')
-flag_click = [False, None]
+flag_click = [False, False, None]
 
 
 class Button:  # класс для создания кнопок
@@ -53,11 +53,19 @@ class Button:  # класс для создания кнопок
                             self.action = True
                             mainField.pause(True)
                         elif action == 'change_hero':
-                            flag_click = [True, param_action]
+                            flag_click[0] = True
+                            if flag_click[0] and flag_click[1]:
+                                mainField.change_hero(param_action, flag_click[2])
+                                flag_click = [False, False, None]
+                            else:
+                                flag_click = [True, False, param_action]
                         elif action == 'change':
-                            if flag_click[0]:
-                                mainField.change_hero(flag_click[1], param_action)
-                                flag_click = [False, None]
+                            flag_click[1] = True
+                            if flag_click[0] and flag_click[1]:
+                                mainField.change_hero(flag_click[2], param_action)
+                                flag_click = [False, False, None]
+                            else:
+                                flag_click = [False, True, param_action]
                         elif action == 'quit':
                             self.action = True
                         else:

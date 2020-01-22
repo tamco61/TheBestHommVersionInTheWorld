@@ -191,7 +191,7 @@ def congratulations(flag):  # выводит результат битвы
         pygame.display.flip()
 
 
-def resume():
+def resume():  # запускает загруженную игру
     loaded = dop_func.load_game()
     level = int(list(loaded['planets'].keys())[0])
     database.TAKED_HERO.clear()
@@ -211,7 +211,7 @@ def resume():
     run_cycle(groupMain.lst[0], level, planets)
 
 
-def change_hero(hero1, hero2):
+def change_hero(hero1, hero2):  # меняет двух героев местами
     index = 0
     for i in groupMain.lst:
         if i.name == hero2:
@@ -226,7 +226,7 @@ def change_hero(hero1, hero2):
     database.TAKED_HERO.remove(hero1)
 
 
-def change():
+def change():  # вывод окна команды
     pers = mainMenu.Button(250, 75, text_size=30, inactive_color=(255, 255, 255), active_color=(255, 255, 255),
                            font_type='stat.ttf')
     stock = mainMenu.Button(250, 75, text_size=30, inactive_color=(255, 255, 255), active_color=(255, 255, 255),
