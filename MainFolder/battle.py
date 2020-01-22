@@ -35,7 +35,7 @@ class Battle:  # Класс боя в котором происходит про
                     self.lst1[i] = (hp1, dmg1, armour1)
             n = 0
             while True:
-                if self.lst1[n][0] < 0:
+                if self.lst1[n][0] <= 0:
                     self.lst1.remove(self.lst1[n])
                     n = -1
                 n += 1
@@ -43,7 +43,7 @@ class Battle:  # Класс боя в котором происходит про
                     break
             n = 0
             while True:
-                if self.lst2[n][0] < 0:
+                if self.lst2[n][0] <= 0:
                     self.lst2.remove(self.lst2[n])
                     n = -1
                 n += 1
