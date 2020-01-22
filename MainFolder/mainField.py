@@ -75,6 +75,8 @@ def battleUI(planet=None, flag=False, res=None):
 class Planet:  # класс для создания планет
     def __init__(self, id, x, y, lvl):
         self.id = id
+        if lvl > 6:
+            lvl = 6
         self.lvl = lvl
         self.x = x
         self.y = y
