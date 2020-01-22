@@ -184,7 +184,9 @@ def congratulations(flag):  # выводит результат битвы
             if event.type == pygame.MOUSEBUTTONDOWN:
                 return
         screen.blit(fon, (0, 0))
-        if flag:
+        if flag is None:
+            dop_func.print_text(screen, "Игра завершена", WIDTH // 2 - WIDTH // 13, HEIGHT // 2 - HEIGHT // 15)
+        elif flag:
             dop_func.print_text(screen, "Вы победили", WIDTH // 2 - WIDTH // 13, HEIGHT // 2 - HEIGHT // 15)
         else:
             dop_func.print_text(screen, "Вы проиграли", WIDTH // 2 - WIDTH // 13, HEIGHT // 2 - HEIGHT // 15)
@@ -355,6 +357,8 @@ def run_cycle(captain_name, LEVEL=1, planets=None):  # основной цикл
                                 stat = False
                         if stat:
                             return mainMenu.choose_captain(LEVEL + 1)
+                    else:
+                        congratulations(None)
                     break
                 flag = True
                 for i in range(len(lst_planet)):
