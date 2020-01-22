@@ -91,7 +91,8 @@ class Planet:  # класс для создания планет
         for i in range(self.lvl):
             while True:
                 person = database.full_hero()
-                if person[0] not in database.TAKED_HERO:
+                if person[0] not in database.TAKED_HERO or \
+                        person[0] not in list(map(lambda x: x.name, defaultUnit.groupMain.get_lst())):
                     break
             name, hp, damage, armour, bonus_hp, bonus_damage, bonus_armour, photo = person
             hero = defaultUnit.HeroUnit(name, hp, damage, armour, group, bonus_hp, bonus_damage, bonus_armour, photo)
@@ -196,10 +197,12 @@ def resume():
     database.TAKED_HERO.clear()
     groupMain.lst.clear()
     for i in loaded['heroes']:
-        database.TAKED_HERO.append(i)
-        name, hp, damage, armour, bonus_hp, bonus_damage, bonus_armour, photo = list(database.full_hero(i))
-        hero = defaultUnit.HeroUnit(name, hp, damage, armour, groupMain, bonus_hp, bonus_damage, bonus_armour, photo)
-        groupMain.append_hero(hero)
+        if loaded['heroes'].index(i) > 5:
+            database.TAKED_HERO.append(i)
+        else:
+            name, hp, damage, armour, bonus_hp, bonus_damage, bonus_armour, photo = list(database.full_hero(i))
+            hero = defaultUnit.HeroUnit(name, hp, damage, armour, groupMain, bonus_hp, bonus_damage, bonus_armour, photo)
+            groupMain.append_hero(hero)
     planets = [Planet(i[0], i[1], i[2], level) for i in database.take_planet(level)]
     for i in planets:
         for j in loaded['planets'][str(level)]:
@@ -220,6 +223,7 @@ def change_hero(hero1, hero2):
     hero = defaultUnit.HeroUnit(name, hp, damage, armour, groupMain, bonus_hp, bonus_damage, bonus_armour, photo)
     groupMain.lst.insert(index, hero)
     database.TAKED_HERO.insert(index1, hero2)
+    database.TAKED_HERO.remove(hero1)
 
 
 def change():
@@ -249,10 +253,6 @@ def change():
         hp = 0
         damage = 0
         armour = 0
-        for i in lineup:
-            for j in taked:
-                if i == j.name:
-                    lineup.remove(i)
         for i in range(len(taked)):
             pers.draw(WIDTH // 15, i * HEIGHT // 13 + HEIGHT // 5, f'{taked[i].name}', color='black',
                       action='change', param_action=taked[i].name)
@@ -319,7 +319,7 @@ def draw_level(number, board):  # рисует уровень
 
 
 def run_cycle(captain_name, LEVEL=1, planets=None):  # основной цикл
-    if len(groupMain.lst) != LEVEL:
+    if len(groupMain.lst) != LEVEL and LEVEL < 6:
         groupMain.lst.clear()
     if groupMain.lst == list():
         name, hp, damage, armour, bonus_hp, bonus_damage, bonus_armour, photo = list(database.full_hero(captain_name))

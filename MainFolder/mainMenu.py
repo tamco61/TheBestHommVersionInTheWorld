@@ -74,12 +74,17 @@ class Button:  # класс для создания кнопок
         return self.action
 
 
-def set_captain(name, LEVEL=1):  # переход к основному игровому полю
-    database.TAKED_HERO.append(name)
-    name, hp, damage, armour, bonus_hp, bonus_damage, bonus_armour, photo = list(database.full_hero(name))
-    Hero = defaultUnit.HeroUnit(name, hp, damage, armour, groupMain, bonus_hp, bonus_damage, bonus_armour, photo)
-    groupMain.append_hero(Hero)
-    mainField.run_cycle(name, LEVEL)
+def set_captain(name, LEVEL=1):
+    # переход к основному игровому полю
+    if LEVEL > 5:
+        database.TAKED_HERO.append(name)
+    else:
+        name, hp, damage, armour, bonus_hp, bonus_damage, bonus_armour, photo = list(database.full_hero(name))
+        hero = defaultUnit.HeroUnit(name, hp, damage, armour, groupMain, bonus_hp, bonus_damage, bonus_armour, photo)
+        groupMain.append_hero(hero)
+
+    mainField.run_cycle(groupMain.lst[0].name, LEVEL)
+
     return
 
 
@@ -143,7 +148,7 @@ def choose_captain(LEVEL=1):  # выбор капитана, очень мног
     heroes = set()
     while len(heroes) != 5:
         hero = database.take_hero()
-        if hero[0] in database.TAKED_HERO:
+        if hero[0] in database.TAKED_HERO or hero[0] in list(map(lambda x: x.name, defaultUnit.groupMain.get_lst())):
             continue
         heroes.add(hero)
     heroes = list(heroes)
@@ -191,3 +196,6 @@ def choose_captain(LEVEL=1):  # выбор капитана, очень мног
         pygame.display.flip()
         clock.tick(FPS)
 
+
+if __name__ == '__main__':
+    menu()

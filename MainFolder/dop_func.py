@@ -1,5 +1,6 @@
 import pygame, sys, json
 from MainFolder import database
+from UnitClasses import defaultUnit
 
 
 def terminate():  # при вызове функции игра завершается
@@ -34,7 +35,8 @@ def print_text(screen, text, x, y, font_size=50, font_type='cosm.ttf', color='wh
 
 def save_game(planets):  # сохраняет игру
     with open('save/save1.json', 'w') as save_file:
-        data = {'heroes': database.TAKED_HERO, 'planets': {}}
+        data = {'heroes': list(map(lambda x: x.name, defaultUnit.groupMain.get_lst())) + database.TAKED_HERO,
+                'planets': {}}
         for i in planets[0]:
             if i is planets[0][0]:
                 data['planets'][str(planets[1])] = [{i.id: i.status}]
