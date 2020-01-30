@@ -9,7 +9,6 @@ def terminate():  # при вызове функции игра завершае
 
 
 def load_image(name, colorkey=None):  # функция для загрузки изображений
-
     image = pygame.image.load('data/' + name).convert()
     if colorkey is not None:  # проверка на прозрачный фон
         if colorkey == -1:

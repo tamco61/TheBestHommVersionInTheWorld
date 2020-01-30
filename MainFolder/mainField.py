@@ -6,10 +6,8 @@ from MainFolder.battle import Battle
 from MainFolder import mainMenu
 from UnitClasses.defaultUnit import groupMain
 
-
 pygame.init()
 clock = pygame.time.Clock()
-all_sprites = pygame.sprite.Group()
 screen = pygame.display.set_mode(flags=pygame.FULLSCREEN)
 WIDTH, HEIGHT = screen.get_width(), screen.get_height()
 FPS = 20
@@ -40,12 +38,12 @@ def battleUI(planet=None, flag=False, res=None):
             dop_func.print_text(screen, f'{battle.gr1.get_lst()[i].name} HP {hpp} DMG {dmgg} ARM '
                                         f'{armrr}', WIDTH // 15, i * HEIGHT // 10 + HEIGHT // 5,
                                 font_type='stat.ttf', font_size=35)
-            dop_func.print_text(screen, 'Общие статы', WIDTH // 15, HEIGHT // 2 + HEIGHT // 8, font_type='stat.ttf',
+            dop_func.print_text(screen, 'Общие статы', WIDTH // 15, HEIGHT // 2 + HEIGHT // 5, font_type='stat.ttf',
                                 font_size=45)
             hp += int(hpp)
             damage += int(dmgg)
             armour += int(armrr)
-        dop_func.print_text(screen, f'HP {hp} DMG {damage} ARM {armour}', WIDTH // 15, HEIGHT // 2 + HEIGHT // 6,
+        dop_func.print_text(screen, f'HP {hp} DMG {damage} ARM {armour}', WIDTH // 15, HEIGHT // 2 + HEIGHT // 4,
                             font_type='stat.ttf',
                             font_size=35)
         hp, damage, armour = 0, 0, 0
@@ -58,14 +56,13 @@ def battleUI(planet=None, flag=False, res=None):
                                 f'{battle.gr2.get_lst()[i].name} HP {hpp} DMG {dmgg} ARM '
                                 f'{armrr}',
                                 WIDTH // 2, i * HEIGHT // 10 + HEIGHT // 5, font_type='stat.ttf', font_size=35)
-            dop_func.print_text(screen, 'Общие статы', WIDTH // 2, HEIGHT // 2 + HEIGHT // 8, font_type='stat.ttf',
+            dop_func.print_text(screen, 'Общие статы', WIDTH // 2, HEIGHT // 2 + HEIGHT // 5, font_type='stat.ttf',
                                 font_size=45)
             hp += int(hpp)
             damage += int(dmgg)
             armour += int(armrr)
-        dop_func.print_text(screen, f'HP {hp} DMG {damage} ARM {armour}', WIDTH // 2, HEIGHT // 2 + HEIGHT // 6,
-                                font_type='stat.ttf',
-                                font_size=35)
+        dop_func.print_text(screen, f'HP {hp} DMG {damage} ARM {armour}', WIDTH // 2, HEIGHT // 2 + HEIGHT // 4,
+                            font_type='stat.ttf', font_size=35)
         start_but.draw(WIDTH // 2 - start_but.width // 2, HEIGHT // 2 + HEIGHT // 3, "Ход", 'battle', battle)
         pygame.display.flip()
         if battle.get_result() is not None:

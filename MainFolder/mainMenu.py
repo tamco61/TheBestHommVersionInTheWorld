@@ -1,11 +1,9 @@
-import pygame, random, os
-from MainFolder import dop_func, database, mainField, battle
+import pygame, random
+from MainFolder import dop_func, database, mainField
 from UnitClasses.defaultUnit import groupMain
 from UnitClasses import defaultUnit
-from MainFolder.battle import Battle
 
 pygame.init()
-
 screen = pygame.display.set_mode(flags=pygame.FULLSCREEN)
 running = True
 FPS = 10
@@ -16,8 +14,8 @@ flag_click = [False, False, None]
 
 
 class Button:  # класс для создания кнопок
-    def __init__(self, width, height, inactive_color=(150, 150, 150), active_color=(0, 0, 0), text_size=50, font_type='cosm.ttf'):
-
+    def __init__(self, width, height, inactive_color=(150, 150, 150), active_color=(0, 0, 0), text_size=50,
+                 font_type='cosm.ttf'):
         self.width = width
         self.height = height
         self.inactive_color = inactive_color
@@ -25,7 +23,6 @@ class Button:  # класс для создания кнопок
         self.text_size = text_size
         self.font_type = font_type
         self.action = None
-        self.t = False
 
     def draw(self, x, y, text, action=None, param_action=None, color='white'):  # рисует кнопку
         mouse = pygame.mouse.get_pos()
@@ -92,26 +89,25 @@ def set_captain(name, LEVEL=1):
         groupMain.append_hero(hero)
 
     mainField.run_cycle(groupMain.lst[0].name, LEVEL)
-
     return
 
 
 def draw_stat(lst, lst1):  # вывод стат
     dop_func.print_text(screen, lst[0], lst1[1][0] + WIDTH // 20, lst1[1][1] + HEIGHT // 6, font_size=25, color='black',
-               font_type='stat.ttf')
-    dop_func.print_text(screen, f'Hit Point {lst[1]}', lst1[1][0] + WIDTH // 20, lst1[1][1] + HEIGHT // 6 + 35, font_size=25,
-               color='black', font_type='stat.ttf')
-    dop_func.print_text(screen, f'Damage {lst[2]}', lst1[1][0] + WIDTH // 20, lst1[1][1] + HEIGHT // 6 + 70, font_size=25,
-               color='black', font_type='stat.ttf')
-    dop_func.print_text(screen, f'Armour {lst[3]}', lst1[1][0] + WIDTH // 20, lst1[1][1] + HEIGHT // 6 + 105, font_size=25,
-               color='black', font_type='stat.ttf')
-    dop_func.print_text(screen, f'{lst[4]}', lst1[1][0] + WIDTH // 20, lst1[1][1] + HEIGHT // 6 + 140, font_size=25,
-               color='black', font_type='stat.ttf')
+                        font_type='stat.ttf')
+    dop_func.print_text(screen, f'Hit Point {lst[1]}', lst1[1][0] + WIDTH // 20, lst1[1][1] + HEIGHT // 6 + 35,
+                        font_size=25, color='black', font_type='stat.ttf')
+    dop_func.print_text(screen, f'Damage {lst[2]}', lst1[1][0] + WIDTH // 20, lst1[1][1] + HEIGHT // 6 + 70,
+                        font_size=25, color='black', font_type='stat.ttf')
+    dop_func.print_text(screen, f'Armour {lst[3]}', lst1[1][0] + WIDTH // 20, lst1[1][1] + HEIGHT // 6 + 105,
+                        font_size=25, color='black', font_type='stat.ttf')
+    dop_func.print_text(screen, f'{lst[4]}', lst1[1][0] + WIDTH // 20, lst1[1][1] + HEIGHT // 6 + 140,
+                        font_size=25, color='black', font_type='stat.ttf')
 
 
 def menu():  # стартовое меню
     fon = pygame.transform.scale(dop_func.load_image(f'fon{str(random.randint(0, 4))}.jpg'),
-                                 (screen.get_width(), screen.get_height()))
+                                 (WIDTH, HEIGHT))
     start_game = Button(350, 80)
     quit_button = Button(225, 80)
     resume_game = Button(350, 80, text_size=45)
@@ -124,18 +120,18 @@ def menu():  # стартовое меню
         counter_sec += 1
         if counter_sec == 40:  # смена фона
             fon = pygame.transform.scale(dop_func.load_image(f'fon{str(random.randint(0, 4))}.jpg'),
-                                         (screen.get_width(), screen.get_height()))
+                                         (WIDTH, HEIGHT))
             counter_sec = 0
         screen.blit(fon, (0, 0))
         if dop_func.check_save():  # если есть сейвы то одна кнопка, если нет, то другая
-            start_game.draw(screen.get_width() // 2 - start_game.width // 2,
-                            screen.get_height() // 4 * 2.5 - 300, 'Новая игра', start)
-            resume_game.draw(screen.get_width() // 2 - start_game.width // 2,
-                             screen.get_height() // 4 * 2.5 - 200, 'Продолжить', mainField.resume)
+            start_game.draw(WIDTH // 2 - start_game.width // 2,
+                            HEIGHT // 4 * 2.5 - 300, 'Новая игра', start)
+            resume_game.draw(WIDTH // 2 - start_game.width // 2,
+                             HEIGHT // 4 * 2.5 - 200, 'Продолжить', mainField.resume)
         else:
-            start_game.draw(screen.get_width() // 2 - start_game.width // 2,
-                            screen.get_height() // 4 * 2.5 - 200, 'Новая игра', start)
-        quit_button.draw(screen.get_width() // 2 - quit_button.width // 2, screen.get_height() // 4 * 2.5 - 100,
+            start_game.draw(WIDTH // 2 - start_game.width // 2,
+                            HEIGHT // 4 * 2.5 - 200, 'Новая игра', start)
+        quit_button.draw(WIDTH // 2 - quit_button.width // 2, HEIGHT // 4 * 2.5 - 100,
                          'Выйти', quit)
         pygame.display.flip()
         clock.tick(FPS)
@@ -152,7 +148,7 @@ def start():
 
 def choose_captain(LEVEL=1):  # выбор капитана, очень много костылей, лучше не смотреть код
     background = pygame.transform.scale(dop_func.load_image(f'board.jpg'),
-                                 (screen.get_width(), screen.get_height()))
+                                 (WIDTH, HEIGHT))
     heroes = set()
     while len(heroes) != 5:
         hero = database.take_hero()
@@ -161,15 +157,15 @@ def choose_captain(LEVEL=1):  # выбор капитана, очень мног
         heroes.add(hero)
     heroes = list(heroes)
     image0 = pygame.transform.scale(dop_func.load_image("heroes/" + heroes[0][-1]),
-                                    (5 * screen.get_width() // 26, screen.get_height() // 2))
+                                    (5 * WIDTH // 26, HEIGHT // 2))
     image1 = pygame.transform.scale(dop_func.load_image("heroes/" + heroes[1][-1]),
-                                    (5 * screen.get_width() // 26, screen.get_height() // 2))
+                                    (5 * WIDTH // 26, HEIGHT // 2))
     image2 = pygame.transform.scale(dop_func.load_image("heroes/" + heroes[2][-1]),
-                                    (5 * screen.get_width() // 26, screen.get_height() // 2))
+                                    (5 * WIDTH // 26, HEIGHT // 2))
     image3 = pygame.transform.scale(dop_func.load_image("heroes/" + heroes[3][-1]),
-                                    (5 * screen.get_width() // 26, screen.get_height() // 2))
+                                    (5 * WIDTH // 26, HEIGHT // 2))
     image4 = pygame.transform.scale(dop_func.load_image("heroes/" + heroes[4][-1]),
-                                    (5 * screen.get_width() // 26, screen.get_height() // 2))
+                                    (5 * WIDTH // 26, HEIGHT // 2))
     dct_names = {0: [heroes[0][0]], 1: [heroes[1][0]], 2: [heroes[2][0]], 3: [heroes[3][0]], 4: [heroes[4][0]]}
     choose = Button(185, 65, text_size=30)
     while True:
